@@ -1,0 +1,40 @@
+/* this controls the overall look of the website */
+body {
+    background-color: blue;
+}
+h1 {
+    color:blanchedalmond;
+    font-size: 36px;
+    text-align: center;
+}
+p {
+    color:black;
+    font-size: 30px;
+    text-align: center;
+}
+button {
+    background-color:red;
+    color: white;
+    padding: 10px 20px;
+    font-size: large;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+}
+button:hover {
+    background-color: darksalmon;
+}
+.tracker {
+    text-align: center;
+    margin-top: 70px;
+
+}
+
+.tracker input {
+    background-color: white;
+    padding: 20px;
+    border-radius: 10px;
+    width: 300px;
+    margin: 50px auto;
+    font-size: 16px;
+}
