@@ -51,18 +51,17 @@ if (document.getElementById("trackResult")) {
       <ul>
         ${data.history.map(item => `<li>${item}</li>`).join("")}
       </ul>
-      ;
-       }
-      }
-      const backButton = document.getElementById("backButton");
+    `;
+  }
+}
+const backButton = document.getElementById("backButton");
 
 if (backButton) {
   backButton.addEventListener("click", function () {
     window.location.href = "index.html";
   });
 }
-      
-    `;
-  }
+
+
 
 
