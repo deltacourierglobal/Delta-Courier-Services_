@@ -8,11 +8,11 @@ const validTrackingNumbers = {
     estimatedDelivery: "February 11, 2026",
     weight: "10.5kg",
     service: "Private Express",
-    status: "Package has arrived at Felipe Ángeles International Airport (NLU/AIFA)). and is awaiting customs clearance.",
+    status: "Package has arrived at Felipe Ángeles International Airport (NLU/AIFA). and is awaiting customs clearance.",
     history: [
-      "Package received at Felipe Ángeles International Airport (NLU/AIFA)).",
+      "Package received at Felipe Ángeles International Airport (NLU/AIFA).",
       "Package departed San Francisco International Airport",
-      "Arrived at Felipe Ángeles International Airport (NLU/AIFA))."
+      "Arrived at Felipe Ángeles International Airport (NLU/AIFA)."
     ]
   }
 };
@@ -21,7 +21,7 @@ const trackBtn = document.getElementById("trackBtn");
 
 if (trackBtn) {
   trackBtn.addEventListener("click", function () {
-    const trackingInput = document.getElementById("trackingNumber").value.trim();
+    const trackingInput = document.getElementById("trackingInput").value.trim();
     
     if (validTrackingNumbers[trackingInput]) {
       localStorage.setItem("trackingData", JSON.stringify(validTrackingNumbers[trackingInput]));
@@ -51,6 +51,18 @@ if (document.getElementById("trackResult")) {
       <ul>
         ${data.history.map(item => `<li>${item}</li>`).join("")}
       </ul>
+      ;
+       }
+      }
+      const backButton = document.getElementById("backButton");
+
+if (backButton) {
+  backButton.addEventListener("click", function () {
+    window.location.href = "index.html";
+  });
+}
+      
     `;
   }
+
 
