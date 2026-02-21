@@ -96,22 +96,31 @@ if (trackResult) {
 
   if (shipment) {
 
-    // Simulate automatic stage progression
-    if (shipment.stage < shipment.stages.length - 1) {
-      shipment.stage += 1;
-      shipment.history.push(`${shipment.stages[shipment.stage]} on ${new Date().toLocaleString()}`);
-      localStorage.setItem("shipments", JSON.stringify(shipments));
-    }
+   // Calculate stage based on time difference
+const shipmentDate = new Date(shipment.shipmentDate);
+const now = new Date();
 
-    // Build progress bar dynamically
+const hoursPassed = Math.floor((now - shipmentDate) / (1000 * 60 * 60));
+
+if (hoursPassed >= 72) {
+  shipment.stage = 4; // Delivered
+} else if (hoursPassed >= 48) {
+  shipment.stage = 3; // Out for Delivery
+} else if (hoursPassed >= 24) {
+  shipment.stage = 2; // Arrived at Hub
+} else if (hoursPassed >= 4) {
+  shipment.stage = 1; // In Transit
+} else {
+  shipment.stage = 0; // Created
+}
+
     const progressBar = shipment.stages
-      .map((stageName, index) => `
-        <div class="progress-step ${index <= shipment.stage ? 'active' : ''}">
-          <div class="step-circle"></div>
-          <div class="step-label">${stageName}</div>
-          <div class="step-time">${shipment.history[index] || ''}</div>
-        </div>
-      `).join('');
+  .map((stageName, index) => `
+    <div class="progress-step ${index <= shipment.stage ? 'active' : ''}">
+      <div class="circle">${index + 1}</div>
+      <div class="label">${stageName}</div>
+    </div>
+  `).join('');
 
     trackResult.innerHTML = `
       <div class="modern-card">
@@ -128,9 +137,17 @@ if (trackResult) {
           <div><strong>Estimated Delivery:</strong> ${shipment.estimatedDelivery}</div>
         </div>
 
-        <h4>Tracking History</h4>
-        <ul>${shipment.history.map(h => `<li>${h}</li>`).join("")}</ul>
-      </div>
+        <div class="map-section">
+  <h4>Current Location</h4>
+  <iframe
+    width="100%"
+    height="250"
+    style="border:0; border-radius:12px;"
+    loading="lazy"
+    allowfullscreen
+    src="https://www.google.com/maps?q=${encodeURIComponent(shipment.destination)}&output=embed">
+  </iframe>
+</div>
     `;
 
   } else {
@@ -154,4 +171,24 @@ if (contactForm) {
     alert("Your message has been sent successfully! Our team will contact you shortly.");
     contactForm.reset();
   });
+}
+
+function updateShipment() {
+  const trackingNumber = document.getElementById("adminTracking").value.trim();
+  const newStage = parseInt(document.getElementById("adminStage").value);
+
+  let shipments = JSON.parse(localStorage.getItem("shipments")) || [];
+  const shipment = shipments.find(item => item.trackingNumber === trackingNumber);
+
+  if (!shipment) {
+    document.getElementById("adminMessage").innerText = "Tracking number not found.";
+    return;
+  }
+
+  shipment.stage = newStage;
+  shipment.history[newStage] = `${shipment.stages[newStage]} on ${new Date().toLocaleString()}`;
+
+  localStorage.setItem("shipments", JSON.stringify(shipments));
+
+  document.getElementById("adminMessage").innerText = "Shipment updated successfully!";
 }
