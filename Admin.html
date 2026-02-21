@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Admin Panel</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <script>
+  const password = prompt("Enter Admin Password:");
+  if (password !== "admin123") {
+    alert("Access Denied");
+    window.location.href = "index.html";
+  }
+</script>
+
+<div class="modern-card">
+  <h2>Admin - Update Shipment</h2>
+
+  <input type="text" id="adminTracking" placeholder="Enter Tracking Number">
+  
+  <select id="adminStage">
+    <option value="0">Shipment Created</option>
+    <option value="1">In Transit</option>
+    <option value="2">Arrived at Hub</option>
+    <option value="3">Out for Delivery</option>
+    <option value="4">Delivered</option>
+  </select>
+
+  <button onclick="updateShipment()">Update Status</button>
+
+  <p id="adminMessage"></p>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
