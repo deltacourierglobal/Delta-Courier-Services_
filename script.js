@@ -1,67 +1,157 @@
-const validTrackingNumbers = {
-  "MX908472615US": {
-    receiver: "Erica Acosta",
-    origin: "San Francisco, U.S.A",
-    destination: "Mochis Sinaloa, Mexico",
-    airport: "Felipe Ángeles International Airport (NLU/AIFA)).",
-    shipmentDate: "February 10, 2026",
-    estimatedDelivery: "February 11, 2026",
-    weight: "10.5kg",
-    service: "Private Express",
-    status: "Package has arrived at Felipe Ángeles International Airport (NLU/AIFA). and is awaiting customs clearance.",
-    history: [
-      "Package received at Felipe Ángeles International Airport (NLU/AIFA).",
-      "Package departed San Francisco International Airport",
-      "Arrived at Felipe Ángeles International Airport (NLU/AIFA)."
-    ]
-  }
-};
+// ======================================
+// UTILITY: GENERATE TRACKING NUMBER
+// ======================================
+
+function generateTrackingNumber() {
+  const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+  const numbers = Math.floor(100000000 + Math.random() * 900000000);
+  return (
+    letters[Math.floor(Math.random() * letters.length)] +
+    letters[Math.floor(Math.random() * letters.length)] +
+    numbers +
+    "US"
+  );
+}
+
+// ======================================
+// REGISTER SHIPMENT
+// ======================================
+
+const registerForm = document.getElementById("registerForm");
+
+if (registerForm) {
+  registerForm.addEventListener("submit", function (e) {
+    e.preventDefault();
+
+    const trackingNumber = generateTrackingNumber();
+
+    const today = new Date();
+    const estimated = new Date();
+    estimated.setDate(today.getDate() + 3); // 3-day estimate
+
+    const shipment = {
+      trackingNumber,
+      receiver: document.getElementById("receiver").value,
+      origin: document.getElementById("origin").value,
+      destination: document.getElementById("destination").value,
+      weight: document.getElementById("weight").value,
+      service: document.getElementById("service").value,
+
+      shipmentDate: today.toLocaleString(),
+      estimatedDelivery: estimated.toLocaleString(),
+
+      stage: 0,
+      stages: [
+        "Shipment Created",
+        "In Transit",
+        "Arrived at Distribution Hub",
+        "Out for Delivery",
+        "Delivered"
+      ],
+      history: [`Shipment created on ${today.toLocaleString()}`]
+    };
+
+    let shipments = JSON.parse(localStorage.getItem("shipments")) || [];
+    shipments.push(shipment);
+    localStorage.setItem("shipments", JSON.stringify(shipments));
+
+    // Save tracking number for immediate display
+    localStorage.setItem("searchTracking", trackingNumber);
+
+    // Redirect to tracking page
+    window.location.href = "track.html";
+  });
+}
+
+// ======================================
+// TRACK FROM INDEX PAGE
+// ======================================
 
 const trackBtn = document.getElementById("trackBtn");
 
 if (trackBtn) {
   trackBtn.addEventListener("click", function () {
     const trackingInput = document.getElementById("trackingInput").value.trim();
-    
-    if (validTrackingNumbers[trackingInput]) {
-      localStorage.setItem("trackingData", JSON.stringify(validTrackingNumbers[trackingInput]));
-      window.location.href = "track.html";
-    } else {
-      alert("Tracking number not found. Please check and try again.");
+
+    if (!trackingInput) {
+      alert("Please enter a tracking number.");
+      return;
     }
+
+    localStorage.setItem("searchTracking", trackingInput);
+    window.location.href = "track.html";
   });
 }
 
-if (document.getElementById("trackResult")) {
-  const data = JSON.parse(localStorage.getItem("trackingData"));
+// ======================================
+// DISPLAY TRACKING DETAILS
+// ======================================
 
-  if (data) {
-    document.getElementById("trackResult").innerHTML = `
-      <h3>Shipment Details</h3>
-      <p><strong>Receiver:</strong> ${data.receiver}</p>
-      <p><strong>Origin:</strong> ${data.origin}</p>
-      <p><strong>Destination:</strong> ${data.destination}</p>
-      <p><strong>Airport Landed:</strong> ${data.airport}</p>
-      <p><strong>Shipment Date:</strong> ${data.shipmentDate}</p>
-      <p><strong>Estimated Delivery:</strong> ${data.estimatedDelivery}</p>
-      <p><strong>Weight:</strong> ${data.weight}</p>
-      <p><strong>Service:</strong> ${data.service}</p>
-      <p><strong>Current Status:</strong> ${data.status}</p>
-      <h4>Tracking History:</h4>
-      <ul>
-        ${data.history.map(item => `<li>${item}</li>`).join("")}
-      </ul>
+const trackResult = document.getElementById("trackResult");
+
+if (trackResult) {
+  const trackingNumber = localStorage.getItem("searchTracking");
+  let shipments = JSON.parse(localStorage.getItem("shipments")) || [];
+  const shipment = shipments.find(item => item.trackingNumber === trackingNumber);
+
+  if (shipment) {
+
+    // Simulate automatic stage progression
+    if (shipment.stage < shipment.stages.length - 1) {
+      shipment.stage += 1;
+      shipment.history.push(`${shipment.stages[shipment.stage]} on ${new Date().toLocaleString()}`);
+      localStorage.setItem("shipments", JSON.stringify(shipments));
+    }
+
+    // Build progress bar dynamically
+    const progressBar = shipment.stages
+      .map((stageName, index) => `
+        <div class="progress-step ${index <= shipment.stage ? 'active' : ''}">
+          <div class="step-circle"></div>
+          <div class="step-label">${stageName}</div>
+          <div class="step-time">${shipment.history[index] || ''}</div>
+        </div>
+      `).join('');
+
+    trackResult.innerHTML = `
+      <div class="modern-card">
+        <h3>Tracking #: ${shipment.trackingNumber}</h3>
+        <div class="progress-bar">${progressBar}</div>
+
+        <div class="info-grid">
+          <div><strong>Receiver:</strong> ${shipment.receiver}</div>
+          <div><strong>Origin:</strong> ${shipment.origin}</div>
+          <div><strong>Destination:</strong> ${shipment.destination}</div>
+          <div><strong>Weight:</strong> ${shipment.weight}</div>
+          <div><strong>Service:</strong> ${shipment.service}</div>
+          <div><strong>Shipment Date:</strong> ${shipment.shipmentDate}</div>
+          <div><strong>Estimated Delivery:</strong> ${shipment.estimatedDelivery}</div>
+        </div>
+
+        <h4>Tracking History</h4>
+        <ul>${shipment.history.map(h => `<li>${h}</li>`).join("")}</ul>
+      </div>
+    `;
+
+  } else {
+    trackResult.innerHTML = `
+      <div class="modern-card">
+        <h3 style="color:red;">Tracking number not found</h3>
+      </div>
     `;
   }
 }
-const backButton = document.getElementById("backButton");
 
-if (backButton) {
-  backButton.addEventListener("click", function () {
-    window.location.href = "index.html";
+// ======================================
+// CONTACT FORM
+// ======================================
+
+const contactForm = document.getElementById("contactForm");
+
+if (contactForm) {
+  contactForm.addEventListener("submit", function (e) {
+    e.preventDefault();
+    alert("Your message has been sent successfully! Our team will contact you shortly.");
+    contactForm.reset();
   });
 }
-
-
-
-
