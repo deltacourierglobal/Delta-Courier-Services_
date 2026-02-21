@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Register Shipment</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="navbar">
+  <h1>Delta Courier Company</h1>
+  <div>
+    <a href="index.html">Home</a>
+    <a href="track.html">Track</a>
+    <a href="register.html">Register</a>
+    <a href="contact.html">Contact</a>
+  </div>
+</div>
+
+<div class="tracking-section">
+  <h2>Register New Shipment</h2>
+
+  <form id="registerForm" class="modern-card">
+    <input type="text" id="receiver" placeholder="Receiver Name" required><br><br>
+    <input type="text" id="origin" placeholder="Origin" required><br><br>
+    <input type="text" id="destination" placeholder="Destination" required><br><br>
+    <input type="text" id="weight" placeholder="Weight (e.g 5kg)" required><br><br>
+    
+    <select id="service" required>
+      <option value="">Select Service</option>
+      <option>Standard Delivery</option>
+      <option>Express Delivery</option>
+      <option>Overnight</option>
+    </select><br><br>
+
+    <button type="submit">Register Shipment</button>
+  </form>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
