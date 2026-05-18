@@ -1,0 +1,832 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Delta Courier Admin</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+
+body{
+font-family:Arial;
+background:#f4f6f9;
+margin:0;
+}
+
+header{
+background:#0a1f44;
+color:white;
+padding:20px;
+text-align:center;
+position:relative;
+}
+
+.container{
+max-width:1100px;
+margin:auto;
+padding:30px;
+}
+
+.dashboard-grid{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:30px;
+}
+
+.card{
+background:white;
+padding:25px;
+border-radius:10px;
+box-shadow:0 4px 10px rgba(0,0,0,0.1);
+}
+
+.card h2{
+margin-bottom:20px;
+}
+
+input,
+select,
+textarea{
+
+width:100%;
+padding:12px 14px;
+margin-bottom:14px;
+
+border-radius:8px;
+border:1px solid #d6dbe3;
+
+font-size:15px;
+font-family:Arial, sans-serif;
+
+background:#fff;
+
+box-sizing:border-box;
+
+transition:0.3s ease;
+
+}
+
+/* FOCUS EFFECT */
+
+input:focus,
+select:focus,
+textarea:focus{
+
+outline:none;
+border-color:#1e88ff;
+
+box-shadow:0 0 0 4px rgba(30,136,255,0.12);
+
+}
+
+/* TEXTAREA */
+
+textarea{
+
+min-height:140px;
+resize:vertical;
+line-height:1.6;
+
+}
+
+button{
+background:#ff6b00;
+color:white;
+border:none;
+padding:12px;
+border-radius:6px;
+cursor:pointer;
+width:100%;
+}
+
+button:hover{
+background:#ff4500;
+}
+
+.success{
+color:green;
+margin-top:10px;
+}
+
+.error{
+color:red;
+margin-top:10px;
+}
+
+table{
+width:100%;
+border-collapse:collapse;
+}
+
+th,td{
+padding:12px;
+border-bottom:1px solid #eee;
+text-align:left;
+}
+
+td button{
+width:auto;
+padding:8px 12px;
+margin-right:6px;
+margin-bottom:5px;
+font-size:13px;
+}
+
+th{
+background:#f4f6f9;
+}
+
+tr:hover{
+background:#fafafa;
+}
+
+.logout{
+position:absolute;
+right:20px;
+top:20px;
+background:#ff6b00;
+width:auto;
+padding:8px 14px;
+}
+
+@media print {
+  body * {
+    visibility: hidden;
+  }
+
+  #invoice, #invoice * {
+    visibility: visible;
+  }
+
+  #invoice {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+  }
+
+  .print-btn {
+    display: none;
+  }
+}
+td button{
+display:inline-block !important;
+visibility:visible !important;
+opacity:1 !important;
+}
+
+</style>
+</head>
+<body>
+<!-- ========================== -->
+<!-- Delta Courier Admin Dashboard -->
+<!-- ========================== -->
+
+<header>
+
+<h1>Delta Courier Admin Dashboard</h1>
+
+<button class="logout" onclick="logout()">
+Logout
+</button>
+
+</header>
+
+<div class="container">
+
+<div class="dashboard-grid">
+
+<!-- CREATE SHIPMENT -->
+<div class="card">
+<h2>Create Shipment</h2>
+
+<input id="senderName" placeholder="Sender Name">
+
+<input id="senderEmail" placeholder="Sender Email">
+<input id="origin" placeholder="Origin">
+<input id="senderPhone" placeholder="Sender Phone">
+
+<input id="receiver" placeholder="Receiver Name">
+<input id="destination" placeholder="Destination">
+<input id="weight" placeholder="Weight">
+<input type="email" id="email" placeholder="Receiver Email">
+<input type="text" id="phone" placeholder="Receiver Phone">
+
+<input id="shipmentDesc" placeholder="Shipment Description">
+
+<input id="shippingFee" placeholder="Shipping Fee">
+
+<input id="insuranceFee" placeholder="Insurance Fee">
+
+<input id="taxFee" placeholder="Tax Fee">
+
+<input id="totalAmount" placeholder="Total Amount">
+
+
+<select id="deliveryType">
+  <option value="Standard">Standard</option>
+  <option value="Express">Express</option>
+</select>
+
+<label>Estimated Delivery</label>
+<input type="datetime-local" id="deliveryDateInput">
+
+<label>Transport Mode</label>
+<select id="transportMode">
+  <option value="truck">🚚 Truck</option>
+  <option value="plane">✈️ Plane</option>
+  <option value="ship">🚢 Ship</option>
+</select>
+
+<button onclick="createShipment()">Create Shipment</button>
+<div id="createMsg"></div>
+</div>
+
+
+<!-- UPDATE SHIPMENT -->
+<div class="card">
+<h2>Update Shipment</h2>
+
+<input id="trackNum" placeholder="Tracking Number">
+
+<select id="status">
+
+<option value="">Select Shipment Status</option>
+
+<option value="Shipment Registered">
+Shipment Registered
+</option>
+
+<option value="In Transit">
+In Transit
+</option>
+
+<option value="Arrived at Facility">
+Arrived at Facility
+
+<option value="At Facility">
+At Facility / Hub
+</option>
+
+</option>
+
+<option value="Customs Clearance">
+Customs Clearance
+</option>
+
+<option value="Out for Delivery">
+Out for Delivery
+</option>
+
+<option value="Delivered">
+Delivered
+</option>
+
+<option value="Delayed">
+Delayed
+</option>
+
+</select>
+
+<textarea id="customerMessage"
+placeholder="Customer email update message"></textarea>
+
+<label>Estimated Delivery</label>
+<input type="datetime-local" id="updateDeliveryDate">
+
+<label>
+  <input type="checkbox" id="isDelayed"> Mark as Delayed
+</label>
+<input type="text" id="delayReason" placeholder="Delay reason">
+
+<label>Transport Mode</label>
+<select id="updateTransportMode">
+  <option value="truck">🚚 Truck</option>
+  <option value="plane">✈️ Plane</option>
+  <option value="ship">🚢 Ship</option>
+  <option value="hub">🏢 Hub</option>
+</select>
+
+
+<!-- MAP -->
+<h3>Update Location</h3>
+<div id="map" style="height:300px;margin-bottom:10px;"></div>
+
+<input id="lat" placeholder="Latitude">
+<input id="lng" placeholder="Longitude">
+<input id="location" placeholder="Current Location">
+
+<button onclick="updateShipment()">Update Shipment</button>
+<div id="updateMsg"></div>
+</div>
+
+</div> 
+
+<div class="card" style="margin-top:30px;">
+
+<h2>Invoice Actions</h2>
+
+<input 
+type="text" 
+id="invoiceTracking" 
+placeholder="Enter Tracking Number">
+
+<button onclick="openInvoice()">
+  Print Invoice
+</button>
+
+</div>
+
+<h2 style="margin-top:40px;">All Shipments</h2>
+
+<div class="card">
+<table>
+<thead>
+<tr>
+<th>Tracking</th>
+<th>Receiver</th>
+<th>Origin</th>
+<th>Destination</th>
+<th>Status</th>
+<th>Action</th>
+</tr>
+</thead>
+<tbody id="shipmentBody"></tbody>
+</table>
+</div>
+
+</div>
+</div>
+
+
+<form id="heroForm">
+  <input type="file" name="hero" required>
+  <button type="submit">Upload Hero Image</button>
+</form>
+
+<script>
+document.getElementById("heroForm").addEventListener("submit", async (e) => {
+  e.preventDefault();
+
+  const formData = new FormData(e.target);
+
+  await fetch("http://localhost:5000/upload-hero", {
+    method: "POST",
+    body: formData
+  });
+
+  alert("Hero image updated!");
+});
+
+</script>
+
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+
+  if(localStorage.getItem("adminAuth") !== "true"){
+    window.location.href = "admin-login.html";
+  }
+
+  const API = "http://localhost:5000";
+
+  let map, marker, routeLine;
+
+  // ================= MAP =================
+  // ================= MAP =================
+
+window.initMap = function() {
+
+  const start = {lat:6.5244, lng:3.3792};
+
+  map = new google.maps.Map(document.getElementById("map"), {
+    zoom:5,
+    center:start
+  });
+
+  // DEFAULT ICON
+  iconUrl =
+"https://maps.google.com/mapfiles/kml/shapes/info-i_maps.png";
+
+
+
+  // CREATE MARKER
+  marker = new google.maps.Marker({
+
+    position:start,
+    map:map,
+    draggable:true,
+
+    icon:{
+      url:iconUrl,
+      scaledSize:new google.maps.Size(50,50)
+    }
+
+  });
+
+  // DRAGGING
+  marker.addListener("dragend", function(){
+
+  const pos = marker.getPosition();
+
+  document.getElementById("lat").value = pos.lat();
+
+  document.getElementById("lng").value = pos.lng();
+
+  drawRoute(
+    start,
+    pos,
+    document.getElementById("updateTransportMode").value
+  );
+
+});
+  // LIVE SWITCHING
+  document.getElementById("updateTransportMode")
+  .addEventListener("change", function(){
+
+    iconUrl =
+"https://maps.google.com/mapfiles/kml/shapes/airports.png";
+
+    if(this.value === "plane"){
+      iconUrl =
+"https://maps.google.com/mapfiles/kml/shapes/airports.png";
+    }
+
+    if(this.value === "ship"){
+      iconUrl =
+"https://maps.google.com/mapfiles/kml/shapes/ferry.png";
+    }
+
+    if(this.value === "hub"){
+     iconUrl =
+"https://maps.google.com/mapfiles/kml/shapes/info-i_maps.png";
+    }
+
+    marker.setIcon({
+      url:iconUrl,
+      scaledSize:new google.maps.Size(50,50)
+    });
+
+  });
+
+
+  function drawRoute(start, end, mode){
+
+  // REMOVE OLD ROUTE
+  if(routeLine){
+    routeLine.setMap(null);
+  }
+
+  let routeColor = "#ff6b00";
+
+  // PLANE
+  if(mode === "plane"){
+    routeColor = "#2962ff";
+  }
+
+  // SHIP
+  if(mode === "ship"){
+    routeColor = "#00acc1";
+  }
+
+  // HUB
+  if(mode === "hub"){
+    routeColor = "#555";
+  }
+
+  routeLine = new google.maps.Polyline({
+
+    path:[start, end],
+
+    geodesic:true,
+
+    strokeColor:routeColor,
+
+    strokeOpacity:1.0,
+
+    strokeWeight:4
+
+  });
+
+  routeLine.setMap(map);
+
+}
+
+};
+
+
+  
+  // ================= LOAD SHIPMENTS =================
+
+function loadShipments() {
+
+  console.log("loadShipments running");
+
+  fetch(`${API}/api/shipments`)
+    .then(res => res.json())
+    .then(data => {
+
+      console.log(data);
+
+      const body = document.getElementById("shipmentBody");
+
+      body.innerHTML = "";
+
+      data.forEach(ship => {
+
+        console.log(ship);
+
+        const row = document.createElement("tr");
+
+        row.innerHTML = `
+          <td>${ship.trackingNumber}</td>
+          <td>${ship.receiver}</td>
+          <td>${ship.origin}</td>
+          <td>${ship.destination}</td>
+          <td>${ship.currentStatus}</td>
+
+          <td>
+            <button onclick="window.printInvoice('${ship.trackingNumber}')">
+              Print Invoice
+            </button>
+
+            <button onclick="window.deleteShipment('${ship.trackingNumber}')">
+              Delete
+            </button>
+          </td>
+        `;
+
+        body.appendChild(row);
+
+      });
+
+    })
+
+    .catch(err => {
+      console.log("FETCH ERROR:", err);
+    });
+
+}
+loadShipments();
+// ================= CREATE =================
+
+window.createShipment = function() {
+
+  const data = {
+
+    sender: document.getElementById("senderName").value.trim(),
+
+senderEmail:
+document.getElementById("senderEmail").value.trim(),
+
+senderPhone:
+document.getElementById("senderPhone").value.trim(),
+
+shipmentDesc:
+document.getElementById("shipmentDesc").value.trim(),
+
+shippingFee:
+document.getElementById("shippingFee").value.trim(),
+
+insuranceFee:
+document.getElementById("insuranceFee").value.trim(),
+
+taxFee:
+document.getElementById("taxFee").value.trim(),
+
+total:
+document.getElementById("totalAmount").value.trim(),
+
+    receiver: document.getElementById("receiver").value.trim(),
+    origin: document.getElementById("origin").value.trim(),
+    destination: document.getElementById("destination").value.trim(),
+    weight: document.getElementById("weight").value.trim(),
+
+    deliveryType: document.getElementById("deliveryType").value,
+
+    transportMode: document.getElementById("transportMode").value,
+
+    email: document.getElementById("email").value.trim(),
+    phone: document.getElementById("phone").value.trim(),
+
+    currentStatus: "Shipment Registered",
+
+    history: [
+      {
+        status: "Shipment Registered",
+        location: "Origin Facility",
+        date: new Date().toLocaleString()
+      }
+    ]
+
+  };
+
+  const deliveryInput =
+  document.getElementById("deliveryDateInput").value;
+
+  if(deliveryInput){
+    data.deliveryDate =
+    new Date(deliveryInput).toISOString();
+  }
+
+  fetch(`${API}/api/shipments`, {
+
+    method: "POST",
+
+    headers: {
+      "Content-Type":"application/json"
+    },
+
+    body: JSON.stringify(data)
+
+  })
+
+  .then(res => res.json())
+
+  .then(response => {
+
+    if(response.success){
+
+      document.getElementById("createMsg").innerHTML =
+      `<p class='success'>
+      Shipment Created:
+      <strong>${response.trackingNumber}</strong>
+      </p>`;
+
+      loadShipments();
+
+    } else {
+
+      document.getElementById("createMsg").innerHTML =
+      `<p class='error'>
+      ${response.error || "Failed"}
+      </p>`;
+
+    }
+
+  });
+
+};
+
+
+// ================= UPDATE =================
+
+window.updateShipment = function() {
+
+  const tracking =
+  document.getElementById("trackNum").value.trim();
+
+  if(!tracking){
+
+    document.getElementById("updateMsg").innerHTML =
+    "<p class='error'>Enter tracking number</p>";
+
+    return;
+
+  }
+
+  const payload = {
+
+    password: "admin123"
+
+  };
+
+  const status =
+  document.getElementById("status").value.trim();
+
+const customMessage =
+document.getElementById("customerMessage").value.trim();
+
+
+  const location =
+  document.getElementById("location").value.trim();
+
+  if(status){
+    payload.currentStatus = status;
+  }
+
+  if(customMessage){
+payload.customerMessage = customMessage;
+}
+
+  const lat = document.getElementById("lat").value;
+  const lng = document.getElementById("lng").value;
+
+  if(lat !== "" && lng !== ""){
+
+    payload.lat = Number(lat);
+    payload.lng = Number(lng);
+
+  }
+
+  if(status || location){
+
+    payload.historyItem = {
+
+      status: status || "Updated",
+
+      location: location || "Unknown Location",
+
+      date: new Date().toLocaleString()
+
+    };
+
+  }
+
+  const deliveryInput =
+  document.getElementById("updateDeliveryDate").value;
+
+  if(deliveryInput){
+
+    payload.deliveryDate =
+    new Date(deliveryInput).toISOString();
+
+  }
+
+  payload.transportMode =
+  document.getElementById("updateTransportMode").value;
+
+  payload.isDelayed =
+  document.getElementById("isDelayed").checked;
+
+  payload.delayReason =
+  document.getElementById("delayReason").value.trim();
+
+  fetch(`${API}/api/shipments/${tracking}`, {
+
+    method: "PUT",
+
+    headers: {
+      "Content-Type":"application/json"
+    },
+
+    body: JSON.stringify(payload)
+
+  })
+
+  .then(res => res.json())
+
+  .then(result => {
+
+    if(result.success){
+
+      document.getElementById("updateMsg").innerHTML =
+      "<p class='success'>Updated</p>";
+
+      loadShipments();
+
+    } else {
+
+      document.getElementById("updateMsg").innerHTML =
+      "<p class='error'>Failed</p>";
+
+    }
+
+  });
+
+};
+
+// ================= PRINT =================
+
+window.printInvoice = function(trackingNumber){
+
+  window.open(
+    `invoice.html?tracking=${trackingNumber}`,
+    "_blank"
+  );
+
+};
+
+window.openInvoice = function(){
+
+  const tracking =
+  document.getElementById("invoiceTracking").value.trim();
+
+  if(!tracking){
+    alert("Enter tracking number");
+    return;
+  }
+
+  window.open(
+    `invoice.html?tracking=${tracking}`,
+    "_blank"
+  );
+
+};
+
+// ================= DELETE =================
+
+window.deleteShipment = function(tracking) {
+
+  fetch(`${API}/api/shipments/${tracking}`, {
+    method:"DELETE"
+  })
+
+  .then(() => loadShipments());
+
+};
+
+});
+</script>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBxNfOGRptsXdSijEekyAeLmnHFdZgDAfY&callback=initMap" async defer></script>
+</body>
+</html>

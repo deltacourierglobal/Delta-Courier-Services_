@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Dashboard - Delta Courier</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+body{
+  margin:0;
+  font-family:Arial;
+  background:#f4f6f9;
+  display:flex;
+}
+
+/* SIDEBAR */
+.sidebar{
+  width:220px;
+  background:#0a1f44;
+  color:white;
+  height:100vh;
+  padding:20px;
+}
+
+.sidebar h2{
+  font-size:18px;
+}
+
+.sidebar a{
+  display:block;
+  color:white;
+  text-decoration:none;
+  margin:15px 0;
+  font-size:14px;
+}
+
+/* MAIN */
+.main{
+  flex:1;
+  padding:20px;
+}
+
+/* TOP BAR */
+.topbar{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:20px;
+}
+
+/* CARDS */
+.cards{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
+  gap:20px;
+}
+
+.card{
+  background:white;
+  padding:20px;
+  border-radius:10px;
+  box-shadow:0 4px 12px rgba(0,0,0,0.08);
+}
+
+/* TABLE */
+.table{
+  margin-top:30px;
+  background:white;
+  padding:20px;
+  border-radius:10px;
+}
+
+table{
+  width:100%;
+  border-collapse:collapse;
+}
+
+th, td{
+  padding:10px;
+  text-align:left;
+  border-bottom:1px solid #ddd;
+}
+
+/* BUTTON */
+button{
+  padding:6px 10px;
+  border:none;
+  background:#1e88ff;
+  color:white;
+  border-radius:5px;
+  cursor:pointer;
+}
+</style>
+</head>
+
+<body>
+
+<!-- SIDEBAR -->
+<div class="sidebar">
+  <h2>Delta Courier</h2>
+
+  <a href="#">Dashboard</a>
+  <a href="#">Shipments</a>
+  <a href="#">Tracking</a>
+  <a href="#">Support</a>
+  <a href="#">Settings</a>
+</div>
+
+<!-- MAIN -->
+<div class="main">
+
+  <!-- TOP -->
+  <div class="topbar">
+    <h2>Dashboard</h2>
+    <span>Admin Panel</span>
+  </div>
+
+  <!-- STATS -->
+  <div class="cards">
+
+    <div class="card">
+      <h3 id="totalShipments">0</h3>
+      <p>Total Shipments</p>
+    </div>
+
+    <div class="card">
+      <h3 id="activeShipments">0</h3>
+      <p>Active Shipments</p>
+    </div>
+
+    <div class="card">
+      <h3 id="deliveredShipments">0</h3>
+      <p>Delivered</p>
+    </div>
+
+    <div class="card">
+      <h3 id="pendingShipments">0</h3>
+      <p>Pending</p>
+    </div>
+
+  </div>
+
+  <!-- TABLE -->
+  <div class="table">
+    <h3>Recent Shipments</h3>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Tracking</th>
+          <th>Status</th>
+          <th>Location</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+
+      <tbody id="shipmentTable"></tbody>
+    </table>
+  </div>
+
+</div>
+
+<script>
+
+// 🔥 SAMPLE DATA (replace with API later)
+const shipments = [
+  {tracking:"DC12345", status:"In Transit", location:"London"},
+  {tracking:"DC67890", status:"Delivered", location:"New York"},
+  {tracking:"DC11122", status:"Pending", location:"Lagos"}
+];
+
+// UPDATE STATS
+document.getElementById("totalShipments").innerText = shipments.length;
+
+document.getElementById("activeShipments").innerText =
+shipments.filter(s=>s.status==="In Transit").length;
+
+document.getElementById("deliveredShipments").innerText =
+shipments.filter(s=>s.status==="Delivered").length;
+
+document.getElementById("pendingShipments").innerText =
+shipments.filter(s=>s.status==="Pending").length;
+
+// LOAD TABLE
+const table = document.getElementById("shipmentTable");
+
+shipments.forEach(s=>{
+  const row = document.createElement("tr");
+
+  row.innerHTML = `
+    <td>${s.tracking}</td>
+    <td>${s.status}</td>
+    <td>${s.location}</td>
+    <td><button onclick="view('${s.tracking}')">View</button></td>
+  `;
+
+  table.appendChild(row);
+});
+
+// VIEW ACTION
+function view(id){
+  window.location.href = `track.html?tracking=${id}`;
+}
+
+</script>
+
+</body>
+</html>

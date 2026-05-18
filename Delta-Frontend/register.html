@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Register Shipment - Delta Courier</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:Arial,sans-serif;background:#f4f6f9;color:#333;}
+a{text-decoration:none;color:inherit;}
+
+/* ===== Header ===== */
+/* ===== Header ===== */
+header{
+  background:#0a1f44;
+  color:#fff;
+  padding:15px 20px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  flex-wrap:wrap; /* allows stacking on small screens */
+}
+
+header h1{
+  font-size:22px;
+}
+
+nav{
+  display:flex;
+  gap:20px;
+}
+
+nav a{
+  font-weight:bold;
+  transition:0.3s;
+}
+
+nav a:hover{
+  color:#f0a500;
+}
+
+/* Mobile Fix */
+@media(max-width:768px){
+  header{
+    flex-direction:column;
+    align-items:flex-start;
+  }
+
+  nav{
+    margin-top:10px;
+    flex-direction:column;
+    gap:10px;
+    width:100%;
+  }
+
+  nav a{
+    padding:5px 0;
+  }
+}
+
+/* ===== Card ===== */
+.register-card{
+  background:#fff;
+  padding:40px;
+  border-radius:16px;
+  max-width:600px;
+  margin:0 auto;
+  box-shadow:0 10px 30px rgba(0,0,0,0.1);
+  text-align:left;
+}
+
+.register-card input,
+.register-card select{
+  width:100%;
+  padding:14px;
+  margin-bottom:18px;
+  border-radius:8px;
+  border:1px solid #ccc;
+  font-size:15px;
+  outline:none;
+}
+
+.register-card button{
+  width:100%;
+  padding:14px;
+  background:#f0a500;
+  color:#fff;
+  font-weight:bold;
+  border:none;
+  border-radius:8px;
+  cursor:pointer;
+  transition:0.3s;
+}
+.register-card button:hover{
+  background:#d18e00;
+}
+
+#registerMessage{
+  margin-bottom:20px;
+  font-weight:bold;
+  text-align:center;
+}
+
+/* ===== Footer ===== */
+footer{
+  background:#0a1f44;
+  color:#fff;
+  padding:20px;
+  text-align:center;
+  font-size:14px;
+  margin-top:60px;
+}
+
+@media(max-width:768px){
+  .section h2{font-size:28px;}
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <h1>Delta Courier</h1>
+  <nav>
+    <a href="index.html">Home</a>
+    <a href="register.html">Register Shipment</a>
+  </nav>
+</header>
+
+<section class="section">
+  <h2>Register New Shipment</h2>
+
+  <div class="register-card">
+    <div id="registerMessage"></div>
+
+    <form id="registerForm">
+      <input type="text" id="receiver" placeholder="Receiver Name" required>
+      <input type="text" id="origin" placeholder="Origin" required>
+      <input type="text" id="destination" placeholder="Destination" required>
+      <input type="number" id="weight" placeholder="Weight" required>
+<select id="weightUnit">
+  <option value="kg">kg</option>
+  <option value="lbs">lbs</option>
+</select>
+      
+      <select id="deliveryType" required>
+        <option value="">Select Delivery Type</option>
+        <option value="Express">Express</option>
+        <option value="Normal">Normal</option>
+        <option value="Economy">Economy</option>
+      </select>
+
+      <input type="text" id="currentStatus" placeholder="Current Status (e.g., Registered)" required>
+
+      <button type="submit">Register Shipment</button>
+    </form>
+  </div>
+</section>
+
+<footer>
+  © 2026 Delta Courier Company | support@deltacourier.com
+</footer>
+
+<script>
+
+// 🔴 IMPORTANT:  CURRENT ngrok URL
+const API_BASE_URL = "https://cornute-catchingly-adelle.ngrok-free.dev";
+
+const regForm = document.getElementById('registerForm');
+const regMessage = document.getElementById('registerMessage');
+
+regForm.addEventListener('submit', e=>{
+  e.preventDefault();
+
+  const shipment = {
+    receiver: document.getElementById('receiver').value,
+    origin: document.getElementById('origin').value,
+    destination: document.getElementById('destination').value,
+    weight: document.getElementById('weight').value,
+    deliveryType: document.getElementById('deliveryType').value,
+    currentStatus: document.getElementById('currentStatus').value
+  };
+
+  fetch(`${API_BASE_URL}/api/shipments`, {
+    method:'POST',
+    headers:{'Content-Type':'application/json'},
+    body:JSON.stringify(shipment)
+  })
+  .then(res=>res.json())
+  .then(data=>{
+    if(data.error){
+      regMessage.style.color='red';
+      regMessage.innerText=data.error;
+    } else {
+      regMessage.style.color='green';
+      regMessage.innerText=`Shipment Registered! Tracking #: ${data.trackingNumber}`;
+      regForm.reset();
+    }
+  })
+  .catch(()=>{
+    regMessage.style.color='red';
+    regMessage.innerText='Server error. Try again.';
+  });
+
+});
+</script>
+
+</body>
+</html>
