@@ -1,6 +1,12 @@
 // ================================
 // LOAD ENV VARIABLES
 // ================================
+
+
+console.log("🔥 SERVER STARTING...");
+
+console.log("redeploy trigger");
+
 require('dotenv').config();
 
 const express = require('express');
@@ -58,13 +64,12 @@ let DB_CONNECTED = false;
 mongoose.connect(process.env.MONGO_URI)
 .then(()=>{
   DB_CONNECTED = true;
-  console.log("✅ MongoDB connected");
+  console.log("MongoDB connected");
 })
 .catch(err=>{
-  console.log("⚠️ MongoDB failed:", err.message);
-  console.log("⚠️ Server will run in MOCK MODE without DB");
+  console.log("MongoDB failed:", err.message);
+  DB_CONNECTED = false;
 });
-
 
 // ================================
 // SHIPMENT MODEL
@@ -544,13 +549,13 @@ res.status(500).json({error:"Server error"});
 // ================================
 
 app.use(express.static(path.join(__dirname,"Delta-Frontend")));
-
 app.use('/api/auth', authRoutes);
 
 app.get("/",(req,res)=>{
 res.sendFile(path.join(__dirname,"Delta-Frontend","index.html"));
 });
 
+console.log("🚀 ABOUT TO LISTEN...");
 
 // ================================
 // START SERVER
