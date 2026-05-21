@@ -49,7 +49,7 @@ console.log("BREVO PASS EXISTS:", !!process.env.BREVO_PASS);
 
     const info = await transporter.sendMail({
 
-      from: `"Delta Courier" <richardanakwe@gmail.com>`,
+      from: `"Delta Courier" <${process.env.BREVO_USER}>`,
 
       to,
 
