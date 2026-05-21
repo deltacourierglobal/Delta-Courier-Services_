@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Delta Courier Invoice</title>
+
+<style>
+
+/* ================= GLOBAL ================= */
+
+body{
+font-family:Arial,sans-serif;
+background:#eef2f7;
+margin:0;
+padding:30px;
+color:#222;
+}
+
+.invoice-container{
+max-width:950px;
+margin:auto;
+background:white;
+border-radius:14px;
+overflow:hidden;
+box-shadow:0 8px 25px rgba(0,0,0,0.08);
+}
+
+/* ================= HEADER ================= */
+
+.invoice-header{
+background:#0a1f44;
+color:white;
+padding:35px 45px;
+
+display:flex;
+justify-content:space-between;
+align-items:center;
+flex-wrap:wrap;
+}
+
+.company{
+display:flex;
+align-items:center;
+gap:18px;
+}
+
+.company img{
+width:95px;
+}
+
+.company-text h1{
+margin:0;
+font-size:32px;
+}
+
+.company-text p{
+margin-top:6px;
+opacity:0.8;
+font-size:14px;
+}
+
+.invoice-badge{
+background:#ff6b00;
+padding:12px 20px;
+border-radius:40px;
+font-weight:bold;
+font-size:15px;
+}
+
+/* ================= BODY ================= */
+
+.invoice-body{
+padding:45px;
+}
+
+/* TOP GRID */
+
+.top-grid{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:30px;
+margin-bottom:40px;
+}
+
+.info-box{
+background:#f7faff;
+padding:22px;
+border-radius:12px;
+border:1px solid #e3ebf5;
+}
+
+.info-box h3{
+margin-top:0;
+color:#0a1f44;
+margin-bottom:16px;
+}
+
+.info-box p{
+margin:8px 0;
+line-height:1.6;
+}
+
+/* ================= SHIPMENT TABLE ================= */
+
+.table-title{
+margin-bottom:18px;
+color:#0a1f44;
+}
+
+table{
+width:100%;
+border-collapse:collapse;
+margin-bottom:35px;
+}
+
+th{
+background:#0a1f44;
+color:white;
+padding:14px;
+text-align:left;
+font-size:14px;
+}
+
+td{
+padding:14px;
+border-bottom:1px solid #eee;
+font-size:14px;
+}
+
+tr:hover{
+background:#fafcff;
+}
+
+/* ================= TOTAL ================= */
+
+.total-box{
+margin-left:auto;
+width:300px;
+background:#f7faff;
+padding:25px;
+border-radius:12px;
+border:1px solid #dce6f2;
+}
+
+.total-row{
+display:flex;
+justify-content:space-between;
+margin-bottom:12px;
+font-size:15px;
+}
+
+.grand-total{
+font-size:22px;
+font-weight:bold;
+color:#0a1f44;
+border-top:1px solid #ddd;
+padding-top:15px;
+margin-top:15px;
+}
+
+/* ================= FOOTER ================= */
+
+.invoice-footer{
+margin-top:50px;
+padding-top:25px;
+border-top:1px dashed #ccc;
+
+display:flex;
+justify-content:space-between;
+flex-wrap:wrap;
+gap:20px;
+}
+
+.footer-box{
+flex:1;
+min-width:240px;
+}
+
+.footer-box h4{
+margin-bottom:10px;
+color:#0a1f44;
+}
+
+.footer-box p{
+line-height:1.7;
+font-size:14px;
+color:#555;
+}
+
+/* ================= PRINT ================= */
+
+.print-btn{
+position:fixed;
+bottom:30px;
+right:30px;
+
+background:#ff6b00;
+color:white;
+
+border:none;
+padding:16px 28px;
+border-radius:50px;
+
+font-size:16px;
+font-weight:bold;
+
+cursor:pointer;
+
+box-shadow:0 8px 20px rgba(0,0,0,0.2);
+}
+
+.print-btn:hover{
+background:#ff4500;
+}
+
+
+
+.invoice-container{
+box-shadow:none;
+border-radius:0;
+}
+
+
+/* ================= MOBILE ================= */
+
+@media(max-width:768px){
+
+.invoice-header{
+padding:25px;
+gap:20px;
+}
+
+.invoice-body{
+padding:25px;
+}
+
+.top-grid{
+grid-template-columns:1fr;
+}
+
+.total-box{
+width:100%;
+}
+
+table{
+font-size:13px;
+}
+
+}
+
+@media print{
+
+  body{
+    background:white !important;
+    padding:0;
+    margin:0;
+  }
+
+  .print-btn{
+    display:none !important;
+  }
+
+  .invoice-container{
+    box-shadow:none !important;
+    border-radius:0 !important;
+    width:100%;
+    max-width:100%;
+    margin:0;
+  }
+
+  .invoice-header{
+    background:#0a1f44 !important;
+    color:white !important;
+  }
+
+  th{
+    background:#0a1f44 !important;
+    color:white !important;
+  }
+
+  *{
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="invoice-container">
+
+<!-- HEADER -->
+
+<div class="invoice-header">
+
+<div class="company">
+
+<img src="images/logo.png">
+
+<div class="company-text">
+<h1>Delta Courier</h1>
+<p>Global Logistics & Express Delivery</p>
+</div>
+
+</div>
+
+<div class="invoice-badge" id="invoiceNumber">
+INVOICE #00000
+</div>
+
+</div>
+
+<!-- BODY -->
+
+<div class="invoice-body">
+
+<!-- TOP INFO -->
+
+<div class="top-grid">
+
+<div class="info-box">
+
+<h3>Sender Information</h3>
+
+<p><strong>Name:</strong>
+<span id="sender"></span></p>
+
+<p><strong>Address:</strong>
+<span id="origin"></span></p>
+
+<p><strong>Email:</strong>
+<span id="senderEmail"></span></p>
+
+<p><strong>Phone:</strong>
+<span id="senderPhone"></span></p>
+
+</div>
+
+<div class="info-box">
+
+<h3>Receiver Information</h3>
+
+<p><strong>Name:</strong>
+<span id="receiver"></span></p>
+
+<p><strong>Address:</strong>
+<span id="destination"></span></p>
+
+<p><strong>Email:</strong>
+<span id="email"></span></p>
+
+<p><strong>Phone:</strong>
+<span id="phone"></span></p>
+
+</div>
+</div>
+<!-- TABLE -->
+
+<h2 class="table-title">Shipment Details</h2>
+
+<table>
+
+<tr>
+<th>Description</th>
+<th>Tracking</th>
+<th>Weight</th>
+<th>Delivery Type</th>
+<th>Amount</th>
+</tr>
+
+<tr>
+<td id="shipmentDesc"></td>
+<td id="trackingNumber"></td>
+<td id="weight"></td>
+<td id="deliveryType"></td>
+<td id="amount"></td>
+</tr>
+
+</table>
+
+
+<!-- COST SUMMARY -->
+<div class="cost-summary">
+
+  <div class="total-row">
+    <span>Shipping Fee</span>
+    <span id="shippingFee">$0</span>
+  </div>
+
+  <div class="total-row">
+    <span>Insurance</span>
+    <span id="insuranceFee">$0</span>
+  </div>
+
+  <div class="total-row">
+    <span>Tax</span>
+    <span id="taxFee">$0</span>
+  </div>
+
+  <div class="total-row grand-total">
+    <span>Total</span>
+    <span id="grandTotal">$0</span>
+  </div>
+
+</div>
+
+<script>
+
+const API_BASE = "https://delta-courier-services-production-5a20.up.railway.app";
+
+const params = new URLSearchParams(window.location.search);
+
+const tracking =
+params.get("trackingNumber");
+
+fetch(`${API_BASE}/api/shipments/${tracking}`)
+
+.then(res => {
+
+  if(!res.ok){
+    throw new Error("Shipment not found");
+  }
+
+  return res.json();
+
+})
+
+.then(shipment => {
+
+  console.log(shipment);
+
+  document.getElementById("invoiceNumber").textContent =
+  `INVOICE #${shipment.trackingNumber}`;
+
+  document.getElementById("receiver").textContent =
+  shipment.receiver || "-";
+
+  document.getElementById("destination").textContent =
+  shipment.destination || "-";
+
+  document.getElementById("email").textContent =
+  shipment.email || "-";
+
+  document.getElementById("phone").textContent =
+  shipment.phone || "-";
+
+  document.getElementById("sender").textContent =
+shipment.sender || "-";
+
+  document.getElementById("origin").textContent =
+  shipment.origin || "-";
+
+  document.getElementById("senderEmail").textContent =
+shipment.senderEmail || "-";
+
+  document.getElementById("senderPhone").textContent =
+shipment.senderPhone || "-";
+
+  document.getElementById("shipmentDesc").textContent =
+shipment.shipmentDesc || "-";
+
+  document.getElementById("trackingNumber").textContent =
+  shipment.trackingNumber || "-";
+
+  document.getElementById("weight").textContent =
+  shipment.weight || "-";
+
+  document.getElementById("deliveryType").textContent =
+  shipment.deliveryType || "-";
+
+  document.getElementById("amount").textContent =
+  `$${shipment.total || 0}`;
+
+  document.getElementById("shippingFee").textContent =
+  `$${shipment.shippingFee || 0}`;
+
+  document.getElementById("insuranceFee").textContent =
+  `$${shipment.insuranceFee || 0}`;
+
+  document.getElementById("taxFee").textContent =
+  `$${shipment.taxFee || 0}`;
+
+  document.getElementById("grandTotal").textContent =
+  `$${shipment.total || 0}`;
+
+})
+
+.catch(err => {
+
+  console.log(err);
+
+  alert("Invoice failed to load");
+
+});
+</script>
+
+<!-- FOOTER -->
+
+<div class="invoice-footer">
+
+<div class="footer-box">
+<h4>Payment Terms</h4>
+<p>
+Payment must be completed before shipment delivery.
+</p>
+</div>
+
+<div class="footer-box">
+<h4>Company Address</h4>
+<p>
+Delta Courier Global Logistics<br>
+Worldwide Express Delivery Services
+</p>
+</div>
+
+<div class="footer-box">
+<h4>Authorized Signature</h4>
+<p>
+_________________________
+</p>
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+<button class="print-btn" onclick="window.print()">
+🖨 Print Invoice
+</button>
+
+</body>
+</html>

@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Customer Login - Delta Courier</title>
+
+<link rel="icon" href="images/logo.png">
+
+<style>
+/* ================= GLOBAL ================= */
+* {
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  font-family: Arial, sans-serif;
+}
+
+body {
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  min-height:100vh;
+  background: linear-gradient(135deg,#0a1f44,#1e3c72);
+}
+
+/* ================= CONTAINER ================= */
+.container {
+  background:#fff;
+  padding:40px 30px;
+  border-radius:12px;
+  width:360px;
+  text-align:center;
+  box-shadow:0 15px 40px rgba(0,0,0,0.3);
+  position: relative;
+}
+
+/* ================= BACK LINK ================= */
+.back-link {
+  position: absolute;
+  top:15px;
+  left:15px;
+  font-size:14px;
+  text-decoration:none;
+  color:#0a1f44;
+  font-weight:bold;
+  transition:0.3s;
+}
+
+.back-link:hover {
+  color:#1e88ff;
+}
+
+/* ================= LOGO ================= */
+.container img {
+  width:90px;
+  margin-bottom:15px;
+}
+
+/* ================= HEADING ================= */
+.container h2 {
+  color:#0a1f44;
+  margin-bottom:20px;
+  font-size:22px;
+}
+
+/* ================= INPUTS ================= */
+.container input {
+  width:100%;
+  padding:12px;
+  margin:10px 0;
+  border-radius:6px;
+  border:1px solid #ccc;
+}
+
+.container input:focus {
+  border-color:#1e88ff;
+  outline:none;
+}
+
+/* ================= BUTTON ================= */
+.container button {
+  width:100%;
+  padding:12px;
+  background:#0a1f44;
+  color:white;
+  border:none;
+  border-radius:6px;
+  cursor:pointer;
+  font-weight:bold;
+  margin-top:10px;
+  transition:0.3s;
+}
+
+.container button:hover {
+  background:#1e88ff;
+}
+
+/* ================= FOOTER LINK ================= */
+.container p {
+  margin-top:15px;
+  font-size:13px;
+}
+
+.container a {
+  color:#1e88ff;
+  text-decoration:none;
+}
+
+.container a:hover {
+  text-decoration:underline;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<a href="index.html" class="back-link">← Home</a>
+
+<img src="images/logo.png" alt="Delta Courier Logo">
+
+<h2>Customer Login</h2>
+
+<input type="email" id="email" placeholder="Email Address" required>
+<input type="password" id="password" placeholder="Password" required>
+
+<button onclick="loginUser()">Login</button>
+
+<p>Don't have an account? <a href="register-user.html">Register</a></p>
+
+</div>
+
+<script>
+const API_BASE_URL =  "https://delta-courier-services-production-5a20.up.railway.app";
+async function loginUser(){
+  const email = document.getElementById("email").value.trim();
+  const password = document.getElementById("password").value.trim();
+
+  if(!email || !password){
+    alert("Please fill all fields");
+    return;
+  }
+
+  try{
+    const res = await fetch(`${API_BASE_URL}/api/auth/login`, {
+      method:"POST",
+      headers:{
+        "Content-Type":"application/json"
+      },
+      body: JSON.stringify({ email, password })
+    });
+
+    const data = await res.json();
+
+    if(res.ok){
+      // Save token locally
+      localStorage.setItem("token", data.token);
+      localStorage.setItem("userEmail", email);
+
+      alert("Login successful!");
+      // Redirect to dashboard
+      window.location.href = "dashboard.html";
+    } else {
+      alert(data.error || "Login failed");
+    }
+
+  }catch(err){
+    alert("Server error. Try again.");
+  }
+}
+</script>
+
+</body>
+</html>

@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Careers - Delta Courier</title>
+
+<style>
+
+/* ================= GLOBAL ================= */
+body{
+font-family:Arial, Helvetica, sans-serif;
+background:linear-gradient(135deg,#1a2b4d,#274073);
+color:white;
+margin:0;
+}
+
+section{
+padding:70px 20px;
+}
+
+h2{
+font-size:32px;
+margin-bottom:10px;
+}
+
+p{
+opacity:0.85;
+}
+
+/* HERO */
+
+.career-hero{
+  position:relative;
+  height:100vh;
+  overflow:hidden;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+
+.hero-img{
+  position:absolute;
+  width:100%;
+  height:100%;
+  top:0;
+  left:0;
+  object-fit:cover;
+  object-position:center center;
+  z-index:0;
+}
+
+.hero-content{
+  position:relative;
+  z-index:2;
+  text-align:center;
+  color:white;
+}
+
+.career-hero::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  background:rgba(0,0,0,0.30);
+  z-index:1;
+}
+
+/* MOBILE HERO FIX */
+@media(max-width:768px){
+
+  .career-hero{
+    height:75vh;
+    padding:20px;
+  }
+
+  .hero-img{
+    object-position:center top;
+  }
+
+  .hero-content h1{
+    font-size:34px;
+    line-height:1.2;
+  }
+
+  .hero-content p{
+  color:white;
+  opacity:1;
+  font-weight:500;
+  text-shadow:0 2px 12px rgba(0,0,0,0.9);
+}
+}
+/* ================= JOB LIST ================= */
+.jobs{
+max-width:1000px;
+margin:auto;
+margin-top:40px;
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+gap:25px;
+}
+
+.job-card{
+background:#132b52;
+padding:20px;
+border-radius:10px;
+text-align:left;
+transition:0.3s;
+}
+
+.job-card:hover{
+transform:translateY(-5px);
+box-shadow:0 10px 30px rgba(0,0,0,0.4);
+}
+
+.job-card h3{
+margin-bottom:8px;
+}
+
+.job-card p{
+font-size:14px;
+margin-bottom:15px;
+}
+
+.apply-btn{
+background:#1e88ff;
+border:none;
+padding:10px 15px;
+border-radius:6px;
+color:white;
+cursor:pointer;
+}
+
+/* ================= FORM ================= */
+.apply-section{
+background:#08172c;
+}
+
+.form-box{
+max-width:500px;
+margin:auto;
+background:#132b52;
+padding:25px;
+border-radius:10px;
+text-align:left;
+}
+
+.form-box input,
+.form-box textarea{
+width:100%;
+padding:12px;
+margin-bottom:10px;
+border:none;
+border-radius:6px;
+}
+
+.form-box button{
+width:100%;
+padding:12px;
+border:none;
+background:#1e88ff;
+color:white;
+border-radius:6px;
+cursor:pointer;
+}
+
+.career-hero{
+  position:relative;
+  height:350px;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
+  color:white;
+}
+
+.hero-img{
+  position:absolute;
+  top:0;
+  left:0;
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  z-index:0;
+}
+/* ================= EMPTY STATE ================= */
+.no-jobs{
+margin-top:30px;
+opacity:0.8;
+}
+
+/* ================= MOBILE ================= */
+@media(max-width:768px){
+.career-hero h1{
+font-size:28px;
+}
+}
+
+</style>
+</head>
+
+<body>
+
+<!-- HERO -->
+<section class="career-hero">
+<img src="images/career-bg.jpg" class="hero-img">
+  <h1>Careers at Delta Courier</h1>
+  <p>Build the future of global logistics with us.</p>
+</section>
+<!-- JOB LIST -->
+<section>
+  <h2>Open Positions</h2>
+
+  <div class="jobs">
+
+    <div class="job-card">
+      <h3>Logistics Coordinator</h3>
+      <p>Manage shipments, coordinate delivery schedules, and ensure smooth operations.</p>
+      <button class="apply-btn" onclick="scrollToForm()">Apply</button>
+    </div>
+
+    <div class="job-card">
+      <h3>Customer Support Agent</h3>
+      <p>Assist customers with tracking, delivery updates, and service inquiries.</p>
+      <button class="apply-btn" onclick="scrollToForm()">Apply</button>
+    </div>
+
+    <div class="job-card">
+      <h3>Warehouse Supervisor</h3>
+      <p>Oversee warehouse operations, inventory management, and staff coordination.</p>
+      <button class="apply-btn" onclick="scrollToForm()">Apply</button>
+    </div>
+
+  </div>
+
+  <p class="no-jobs">Don’t see a role that fits? Send your CV anyway.</p>
+</section>
+
+<!-- APPLICATION FORM -->
+<section class="apply-section" id="apply">
+  <h2>Apply Now</h2>
+
+  <div class="form-box">
+    <form id="careerForm">
+
+      <input type="text" placeholder="Full Name" required>
+      <input type="email" placeholder="Email Address" required>
+      <input type="text" placeholder="Position Applying For" required>
+      <textarea rows="4" placeholder="Why should we hire you?" required></textarea>
+      <input type="file" required>
+
+      <button type="submit">Submit Application</button>
+
+    </form>
+
+    <p id="successMsg" style="display:none;color:#00ff88;margin-top:10px;">
+      Application submitted successfully!
+    </p>
+  </div>
+</section>
+
+<script>
+function scrollToForm(){
+  document.getElementById("apply").scrollIntoView({behavior:"smooth"});
+}
+
+document.getElementById("careerForm").addEventListener("submit", function(e){
+  e.preventDefault();
+
+  // 🔥 simulate submission (you can connect backend later)
+  document.getElementById("successMsg").style.display = "block";
+  this.reset();
+});
+
+</script>
+
+</body>
+</html>
