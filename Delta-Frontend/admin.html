@@ -385,16 +385,6 @@ let marker = null;
 let moveInterval = null;
 let floatInterval = null;
 
- // ICONS
-  const icons = {
-    plane:"https://maps.google.com/mapfiles/kml/shapes/airports.png",
-    ship:"https://maps.google.com/mapfiles/kml/shapes/ferry.png",
-    hub:"https://maps.google.com/mapfiles/kml/shapes/info-i_maps.png",
-    truck:"https://maps.google.com/mapfiles/ms/icons/truck.png"
-  };
-const icon =
-  icons[mode] || icons.truck;
-
 function createMap(lat, lng, mode) {
 
   const latNum = Number(lat);
@@ -428,6 +418,16 @@ function createMap(lat, lng, mode) {
       draggable:true
 
     });
+
+    // ICONS
+  const icons = {
+    plane:"https://maps.google.com/mapfiles/kml/shapes/airports.png",
+    ship:"https://maps.google.com/mapfiles/kml/shapes/ferry.png",
+    hub:"https://maps.google.com/mapfiles/kml/shapes/info-i_maps.png",
+    truck:"https://maps.google.com/mapfiles/ms/icons/truck.png"
+  };
+const icon =
+  icons[mode] || icons.truck;
 
     // DRAG EVENT
     marker.addListener("dragend",function(){
