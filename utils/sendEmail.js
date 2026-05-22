@@ -111,6 +111,7 @@ Fast • Secure • Worldwide Delivery
     });
 
     console.log("✅ Email sent:", info.messageId);
+    return data;
 
   } catch (err) {
 
