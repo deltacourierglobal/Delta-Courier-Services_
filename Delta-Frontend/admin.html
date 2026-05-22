@@ -385,62 +385,88 @@ let marker = null;
 let moveInterval = null;
 let floatInterval = null;
 
+
+// ICONS (MOVE OUTSIDE createMap)
+const icons = {
+
+  plane:"https://maps.google.com/mapfiles/kml/shapes/airports.png",
+
+  ship:"https://maps.google.com/mapfiles/kml/shapes/ferry.png",
+
+  hub:"https://maps.google.com/mapfiles/kml/shapes/info-i_maps.png",
+
+  truck:"https://maps.google.com/mapfiles/ms/icons/truck.png"
+
+};
+
+
 function createMap(lat, lng, mode) {
 
   const latNum = Number(lat);
   const lngNum = Number(lng);
 
   const position =
+
     (!isNaN(latNum) && !isNaN(lngNum))
-    ? { lat: latNum, lng: lngNum }
-    : { lat: 6.5244, lng: 3.3792 };
+
+    ? { lat:latNum, lng:lngNum }
+
+    : { lat:6.5244, lng:3.3792 };
 
 
+  // GET ICON FIRST
+  const icon =
+  icons[mode] || icons.truck;
 
-  // CREATE MAP ONLY ONCE
+
+  // CREATE MAP ONCE
   if(!map){
 
     map = new google.maps.Map(
+
       document.getElementById("map"),
+
       {
+
         zoom:14,
+
         center:position,
+
         mapTypeControl:false,
+
         streetViewControl:false
+
       }
+
     );
+
 
     marker = new google.maps.Marker({
 
       position:position,
+
       map:map,
+
       icon:icon,
+
       draggable:true
 
     });
 
-    // ICONS
-  const icons = {
-    plane:"https://maps.google.com/mapfiles/kml/shapes/airports.png",
-    ship:"https://maps.google.com/mapfiles/kml/shapes/ferry.png",
-    hub:"https://maps.google.com/mapfiles/kml/shapes/info-i_maps.png",
-    truck:"https://maps.google.com/mapfiles/ms/icons/truck.png"
-  };
-const icon =
-  icons[mode] || icons.truck;
 
     // DRAG EVENT
-    marker.addListener("dragend",function(){
+    marker.addListener("dragend", function(){
 
-      const pos=marker.getPosition();
+      const pos = marker.getPosition();
 
-      document.getElementById("lat").value=
+      document.getElementById("lat").value =
       pos.lat();
 
-      document.getElementById("lng").value=
+      document.getElementById("lng").value =
       pos.lng();
 
     });
+
 
     startFloating();
 
@@ -448,46 +474,68 @@ const icon =
 
   }
 
-  // UPDATE EXISTING MARKER
 
+  // UPDATE ICON
   marker.setIcon(icon);
 
   map.panTo(position);
 
 
+  // STOP OLD MOVEMENT
   if(moveInterval){
+
     clearInterval(moveInterval);
+
   }
 
-  const start=marker.getPosition();
 
-  const startLat=start.lat();
-  const startLng=start.lng();
+  const start = marker.getPosition();
 
-  let i=0;
+  const startLat = start.lat();
 
-  const steps=60;
+  const startLng = start.lng();
 
-  moveInterval=setInterval(()=>{
+  let i = 0;
+
+  const steps = 60;
+
+
+  moveInterval = setInterval(()=>{
 
     i++;
 
-    const lat=
-    startLat + ((position.lat-startLat)*(i/steps));
+    const lat =
 
-    const lng=
-    startLng + ((position.lng-startLng)*(i/steps));
+    startLat +
+
+    ((position.lat - startLat)
+
+    * (i / steps));
+
+
+    const lng =
+
+    startLng +
+
+    ((position.lng - startLng)
+
+    * (i / steps));
+
 
     marker.setPosition({
+
       lat,
+
       lng
+
     });
 
-    if(i>=steps){
+
+    if(i >= steps){
 
       clearInterval(moveInterval);
 
-      moveInterval=null;
+      moveInterval = null;
 
     }
 
@@ -496,7 +544,31 @@ const icon =
 }
 
 
+function startFloating(){
 
+  if(floatInterval) return;
+
+  let dir = 1;
+
+  floatInterval = setInterval(()=>{
+
+    if(!marker || moveInterval) return;
+
+    const pos = marker.getPosition();
+
+    marker.setPosition({
+
+      lat: pos.lat() + (0.00005 * dir),
+
+      lng: pos.lng() + (0.00005 * dir)
+
+    });
+
+    dir *= -1;
+
+  },800);
+
+}
 // ================= LOAD SHIPMENTS =================
 
 window.loadShipments=function(){
