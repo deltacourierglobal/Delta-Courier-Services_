@@ -807,7 +807,19 @@ window.initMap = function () {
 
 };
 
-  
+  document.getElementById(
+"updateTransportMode"
+).addEventListener("change", function(){
+
+    if(marker){
+
+        marker.setIcon(
+          icons[this.value] || icons.truck
+        );
+
+    }
+
+});
 // START
 loadShipments();
 });
