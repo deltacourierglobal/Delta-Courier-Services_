@@ -390,107 +390,111 @@ function createMap(lat, lng, mode) {
   const latNum = Number(lat);
   const lngNum = Number(lng);
 
-  const position = (!isNaN(latNum) && !isNaN(lngNum))
+  const position =
+    (!isNaN(latNum) && !isNaN(lngNum))
     ? { lat: latNum, lng: lngNum }
     : { lat: 6.5244, lng: 3.3792 };
 
 
+  // ICONS
+  const icons = {
+    plane:"https://maps.google.com/mapfiles/kml/shapes/airports.png",
+    ship:"https://maps.google.com/mapfiles/kml/shapes/ferry.png",
+    hub:"https://maps.google.com/mapfiles/kml/shapes/info-i_maps.png",
+    truck:"https://maps.google.com/mapfiles/ms/icons/truck.png"
+  };
 
-  if (!map) {
+  const icon =
+  icons[mode] || icons.truck;
+
+
+  // CREATE MAP ONLY ONCE
+  if(!map){
 
     map = new google.maps.Map(
       document.getElementById("map"),
       {
-        zoom: 6,
-        center: position,
-        mapTypeControl: false,
-        streetViewControl: false,
+        zoom:14,
+        center:position,
+        mapTypeControl:false,
+        streetViewControl:false
       }
     );
 
     marker = new google.maps.Marker({
-      position: position,
-      map: map
+
+      position:position,
+      map:map,
+      icon:icon,
+      draggable:true
+
     });
 
-  } else {
+    // DRAG EVENT
+    marker.addListener("dragend",function(){
 
-    // SMOOTH ANIMATION
-    animateMarker(position);
+      const pos=marker.getPosition();
 
-    map.panTo(position);
+      document.getElementById("lat").value=
+      pos.lat();
 
-  }
+      document.getElementById("lng").value=
+      pos.lng();
 
-  // icons
-  const icons = {
-    plane: "https://maps.google.com/mapfiles/kml/shapes/airports.png",
-    ship: "https://maps.google.com/mapfiles/kml/shapes/ferry.png",
-    hub: "https://maps.google.com/mapfiles/kml/shapes/info-i_maps.png",
-    default: "https://maps.google.com/mapfiles/ms/icons/truck.png"
-  };
-  const icon = icons[mode] || icons.default;
-
-  // create map once
-  if (!map) {
-    map = new google.maps.Map(document.getElementById("map"), {
-      zoom: 14, // zoom in — you need 12-15 to see live movement
-      center: position,
-      mapTypeControl: false,
-      streetViewControl: false,
     });
-    marker = new google.maps.Marker({ position, map, icon });
-    startFloating(); // start wiggle once
+
+    startFloating();
+
     return;
+
   }
 
-  // update icon
+  // UPDATE EXISTING MARKER
+
   marker.setIcon(icon);
+
   map.panTo(position);
 
-  // ---- smooth move ----
-  if (moveInterval) clearInterval(moveInterval);
 
-  const start = marker.getPosition();
-  const startLat = start.lat();
-  const startLng = start.lng();
-  const steps = 60; // ~1.2 seconds at 20ms
-  let i = 0;
+  if(moveInterval){
+    clearInterval(moveInterval);
+  }
 
-  moveInterval = setInterval(() => {
+  const start=marker.getPosition();
+
+  const startLat=start.lat();
+  const startLng=start.lng();
+
+  let i=0;
+
+  const steps=60;
+
+  moveInterval=setInterval(()=>{
+
     i++;
-    const lat = startLat + (position.lat - startLat) * (i / steps);
-    const lng = startLng + (position.lng - startLng) * (i / steps);
-    marker.setPosition({ lat, lng });
 
-    if (i >= steps) {
-      clearInterval(moveInterval);
-      moveInterval = null;
-    }
-  }, 20);
-}
+    const lat=
+    startLat + ((position.lat-startLat)*(i/steps));
 
-function startFloating() {
-  if (floatInterval) return;
-
-  let dir = 1;
-
-  floatInterval = setInterval(() => {
-
-    if (!marker || moveInterval) return;
-
-    const pos = marker.getPosition();
+    const lng=
+    startLng + ((position.lng-startLng)*(i/steps));
 
     marker.setPosition({
-      lat: pos.lat() + 0.00005 * dir,
-      lng: pos.lng() + 0.00005 * dir
+      lat,
+      lng
     });
 
-    dir *= -1;
+    if(i>=steps){
 
-  }, 800);
+      clearInterval(moveInterval);
+
+      moveInterval=null;
+
+    }
+
+  },20);
+
 }
-
 
 
 
