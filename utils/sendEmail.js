@@ -1,33 +1,14 @@
-const nodemailer = require("nodemailer");
+const SibApiV3Sdk = require('sib-api-v3-sdk');
 
-const transporter = nodemailer.createTransport({
+const defaultClient = SibApiV3Sdk.ApiClient.instance;
 
-  host: "smtp-relay.brevo.com",
+const apiKey =
+defaultClient.authentications['api-key'];
 
-  port: 2525,
+apiKey.apiKey = process.env.BREVO_API_KEY;
 
-  secure: false,
-
-  auth: {
-    user: process.env.BREVO_USER,
-    pass: process.env.BREVO_PASS
-  },
-
-  connectionTimeout: 30000,
-  greetingTimeout: 30000,
-  socketTimeout: 30000
-
-});
-
-transporter.verify(function(error, success){
-
-  if(error){
-    console.log("SMTP ERROR:", error);
-  } else {
-    console.log("✅ SMTP READY");
-  }
-
-});
+const apiInstance =
+new SibApiV3Sdk.TransactionalEmailsApi();
 
 const sendEmail = async (
   to,
@@ -38,28 +19,26 @@ const sendEmail = async (
   status
 ) => {
 
-  console.log("SEND EMAIL FUNCTION STARTED");
-
-  if (!to) {
-    console.log("⚠️ No recipient email");
-    return;
-  }
+  console.log("BREVO API EMAIL STARTED");
 
   try {
 
-    console.log("BREVO USER:", process.env.BREVO_USER);
-    console.log("BREVO PASS EXISTS:", !!process.env.BREVO_PASS);
-    console.log("SENDING TO:", to);
+    const data = await apiInstance.sendTransacEmail({
 
-    const info = await transporter.sendMail({
+      sender: {
+        email: process.env.BREVO_USER,
+        name: "Delta Courier"
+      },
 
-      from: `"Delta Courier" <${process.env.BREVO_USER}>`,
+      to: [
+        {
+          email: to
+        }
+      ],
 
-      to,
+      subject: subject,
 
-      subject,
-
-      html: `
+      htmlContent: `
 
 <div style="background:#f4f6f9;padding:40px 20px;font-family:Arial,sans-serif;">
 <div style="max-width:650px;margin:auto;background:white;border-radius:14px;overflow:hidden;box-shadow:0 6px 20px rgba(0,0,0,0.08);">
