@@ -1,4 +1,5 @@
 const nodemailer = require("nodemailer");
+
 const transporter = nodemailer.createTransport({
 
   host: "smtp-relay.brevo.com",
@@ -7,22 +8,10 @@ const transporter = nodemailer.createTransport({
 
   secure: false,
 
-  requireTLS: true,
-
-  family: 4,
-
   auth: {
     user: process.env.BREVO_USER,
     pass: process.env.BREVO_PASS
-  },
-
-  tls: {
-    rejectUnauthorized: false
-  },
-
-  connectionTimeout: 30000,
-  greetingTimeout: 30000,
-  socketTimeout: 30000
+  }
 
 });
 
@@ -45,7 +34,7 @@ const sendEmail = async (
   try {
 
     console.log("BREVO USER:", process.env.BREVO_USER);
-console.log("BREVO PASS EXISTS:", !!process.env.BREVO_PASS);
+    console.log("BREVO PASS EXISTS:", !!process.env.BREVO_PASS);
     console.log("SENDING TO:", to);
 
     const info = await transporter.sendMail({
