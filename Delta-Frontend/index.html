@@ -1226,6 +1226,23 @@ Our Global Logistics Network
 <span>🇦🇪 UAE</span>
 <span>🇦🇺 AUSTRALIA</span>
 <span>🇵🇹 PORTUGAL</span>
+<span>🇳🇴 NORWAY</span>
+<span>🇩🇰 DENMARK</span>
+<span>🇦🇹 AUSTRIA</span>
+<span>🇵🇱 POLAND</span>
+<span>🇧🇪 BELGIUM</span>
+<span>🇸🇪 SWEDEN</span>
+<span>🇨🇭 SWITZERLAND</span>
+<span>🇵🇦 PANAMA</span>
+<span>🇯🇲 JAMAICA</span>
+<span>🇸🇦 SAUDI ARABIA</span>
+<span>🇶🇦 QATAR</span>
+<span>🇰🇼 KUWAIT</span>
+<span>🇴🇲 OMAN</span>
+<span>🇧🇭 BAHRAIN</span>
+<span>🇯🇴 JORDAN</span>
+<span>🇮🇱 ISRAEL</span>
+<span>🇹🇷 TURKEY</span>
 <span>🇳🇬 NIGERIA</span>
 <span>🇨🇳 CHINA</span>      
 <span>🇮🇳 INDIA</span>       
@@ -1237,6 +1254,7 @@ Our Global Logistics Network
 <span>🇲🇽 MEXICO</span>
 <span>🇰🇪 KENYA</span>
 <span>🇰🇷 SOUTH KOREA</span>
+
 <!-- duplicate for smooth loop -->
 
 <span>🇺🇸 USA</span>
@@ -1417,41 +1435,50 @@ Enterprise Trusted
 
 <script>
 
-const counters =
-document.querySelectorAll(".counter");
+async function loadStats(){
 
-const speed = 200;
+try{
 
-counters.forEach(counter => {
+const res = await fetch("/api/stats");
 
-const animate = () => {
+const stats = await res.json();
 
-const value =
-+counter.getAttribute("data-target");
+console.log("LIVE STATS:", stats);
 
-const data =
-+counter.innerText;
+/* SET VALUES */
 
-const time = value / speed;
+document.getElementById(
+"deliveredCount"
+).innerText =
+stats.delivered;
 
-if(data < value){
+document.getElementById(
+"activeCount"
+).innerText =
+stats.active;
 
-counter.innerText =
-Math.ceil(data + time);
+document.getElementById(
+"countryCount"
+).innerText =
+stats.countries;
 
-setTimeout(animate, 15);
+document.getElementById(
+"clientCount"
+).innerText =
+stats.clients;
 
-}else{
+}catch(err){
 
-counter.innerText = value;
+console.log(
+"FAILED TO LOAD STATS:",
+err
+);
 
 }
 
-};
+}
 
-animate();
-
-});
+loadStats();
 
 </script>
 <!-- SCRIPTS -->
