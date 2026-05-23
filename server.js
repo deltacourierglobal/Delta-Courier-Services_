@@ -16,7 +16,7 @@ const multer = require("multer");
 
 const sendEmail = require("./utils/sendEmail");
 
-const stats = require("./models/stats");
+const Stats = require("./models/stats");
 //const sendSMS = require("./utils/sendSMS");//
 
 const authRoutes = require('./routes/authRoutes');
