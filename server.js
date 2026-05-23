@@ -16,6 +16,7 @@ const multer = require("multer");
 
 const sendEmail = require("./utils/sendEmail");
 
+const stats = require("./models/stats");
 //const sendSMS = require("./utils/sendSMS");//
 
 const authRoutes = require('./routes/authRoutes');
@@ -354,26 +355,44 @@ res.status(500).json({error:"Server error"});
 
 /* ================= STATS ================= */
 
-let homepageStats = {
-
-delivered: 1250,
-active: 320,
-countries: 45,
-clients: 980
-
-};
-
 /* GET STATS */
 
-app.get("/api/stats", (req,res)=>{
+app.get("/api/stats", async (req,res)=>{
 
-res.json(homepageStats);
+try{
+
+let stats = await Stats.findOne();
+
+if(!stats){
+
+stats = await Stats.create({
+delivered:1250,
+active:320,
+countries:45,
+clients:980
+});
+
+}
+
+res.json(stats);
+
+}catch(err){
+
+console.log(err);
+
+res.status(500).json({
+error:"Failed to load stats"
+});
+
+}
 
 });
 
 /* UPDATE STATS */
 
-app.put("/api/stats", (req,res)=>{
+app.put("/api/stats", async (req,res)=>{
+
+try{
 
 const password = req.body.password;
 
@@ -385,22 +404,42 @@ error:"Unauthorized"
 
 }
 
-homepageStats.delivered =
+let stats = await Stats.findOne();
+
+if(!stats){
+
+stats = new Stats();
+
+}
+
+stats.delivered =
 req.body.delivered;
 
-homepageStats.active =
+stats.active =
 req.body.active;
 
-homepageStats.countries =
+stats.countries =
 req.body.countries;
 
-homepageStats.clients =
+stats.clients =
 req.body.clients;
+
+await stats.save();
 
 res.json({
 success:true,
-stats:homepageStats
+stats
 });
+
+}catch(err){
+
+console.log(err);
+
+res.status(500).json({
+error:"Failed to update stats"
+});
+
+}
 
 });
 
