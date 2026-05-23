@@ -782,6 +782,210 @@ font-size:15px;
 
 }
 
+/* ================= PREMIUM STATS ================= */
+
+.premium-stats{
+padding:100px 20px;
+background:
+linear-gradient(
+135deg,
+#07162d,
+#0d2447,
+#102d57
+);
+color:white;
+text-align:center;
+overflow:hidden;
+position:relative;
+}
+
+.stats-title{
+font-size:42px;
+margin-bottom:60px;
+font-weight:800;
+letter-spacing:1px;
+}
+
+.stats-grid{
+display:grid;
+grid-template-columns:
+repeat(auto-fit,minmax(240px,1fr));
+gap:30px;
+max-width:1300px;
+margin:auto;
+}
+
+.premium-card{
+position:relative;
+background:
+rgba(255,255,255,0.06);
+backdrop-filter:blur(10px);
+border:1px solid rgba(255,255,255,0.1);
+border-radius:24px;
+padding:40px 25px;
+overflow:hidden;
+transition:0.4s;
+box-shadow:
+0 10px 40px rgba(0,0,0,0.25);
+}
+
+.premium-card:hover{
+transform:translateY(-10px);
+box-shadow:
+0 20px 60px rgba(0,0,0,0.35);
+}
+
+.premium-card h3{
+font-size:58px;
+margin:20px 0 10px;
+font-weight:800;
+}
+
+.premium-card p{
+font-size:18px;
+opacity:0.9;
+}
+
+/* DELIVERED */
+
+.delivered-card{
+background:
+linear-gradient(
+135deg,
+#ff6b00,
+#ff9d00
+);
+color:white;
+}
+
+.glow{
+position:absolute;
+width:250px;
+height:250px;
+background:
+rgba(255,255,255,0.2);
+border-radius:50%;
+top:-80px;
+right:-80px;
+filter:blur(40px);
+}
+
+.tag{
+display:inline-block;
+margin-top:18px;
+padding:10px 18px;
+background:white;
+color:#ff6b00;
+border-radius:30px;
+font-weight:bold;
+font-size:13px;
+}
+
+/* ACTIVE */
+
+.active-card{
+border:
+1px solid rgba(0,255,120,0.3);
+}
+
+.pulse-dot{
+width:16px;
+height:16px;
+background:#00ff88;
+border-radius:50%;
+margin:auto;
+animation:pulse 1.5s infinite;
+}
+
+.live-text{
+display:block;
+margin-top:18px;
+color:#00ff88;
+font-weight:bold;
+letter-spacing:1px;
+font-size:13px;
+}
+
+@keyframes pulse{
+
+0%{
+transform:scale(1);
+box-shadow:0 0 0 0 rgba(0,255,120,0.7);
+}
+
+70%{
+transform:scale(1.2);
+box-shadow:0 0 0 20px rgba(0,255,120,0);
+}
+
+100%{
+transform:scale(1);
+}
+
+}
+
+/* COUNTRIES */
+
+.flags{
+display:flex;
+justify-content:center;
+gap:12px;
+font-size:30px;
+animation:floatFlags 4s infinite ease-in-out;
+}
+
+@keyframes floatFlags{
+
+0%{
+transform:translateY(0);
+}
+
+50%{
+transform:translateY(-8px);
+}
+
+100%{
+transform:translateY(0);
+}
+
+}
+
+/* CLIENTS */
+
+.emoji-row{
+font-size:32px;
+margin-bottom:12px;
+}
+
+.client-badge{
+display:inline-block;
+margin-top:18px;
+padding:10px 20px;
+background:#1e88ff;
+border-radius:30px;
+font-size:13px;
+font-weight:bold;
+}
+
+/* COUNTER ANIMATION */
+
+.counter{
+transition:0.3s;
+}
+
+/* MOBILE */
+
+@media(max-width:768px){
+
+.stats-title{
+font-size:30px;
+}
+
+.premium-card h3{
+font-size:42px;
+}
+
+}
 </style>
 
 </head>
@@ -901,14 +1105,87 @@ Register Shipment
 </div>
 </section>
 
-<section class="stats">
-  <h2>Our Global Logistics Network</h2>
-  <div class="stats-container">
-    <div class="stat"><h3>1250</h3><p>Packages Delivered</p></div>
-    <div class="stat"><h3>320</h3><p>Active Shipments</p></div>
-    <div class="stat"><h3>45</h3><p>Countries Covered</p></div>
-    <div class="stat"><h3>980</h3><p>Happy Clients</p></div>
+<!-- ================= PREMIUM STATS ================= -->
+
+<section class="premium-stats">
+
+<h2 class="stats-title">
+Our Global Logistics Network
+</h2>
+
+<div class="stats-grid">
+
+  <!-- DELIVERED -->
+
+  <div class="premium-card delivered-card">
+
+    <div class="glow"></div>
+
+    <h3 class="counter" data-target="1250">0</h3>
+
+    <p>Packages Delivered</p>
+
+    <span class="tag">Worldwide Success</span>
+
   </div>
+
+  <!-- ACTIVE -->
+
+  <div class="premium-card active-card">
+
+    <div class="pulse-dot"></div>
+
+    <h3 class="counter" data-target="320">0</h3>
+
+    <p>Active Shipments</p>
+
+    <span class="live-text">
+      LIVE TRACKING ACTIVE
+    </span>
+
+  </div>
+
+  <!-- COUNTRIES -->
+
+  <div class="premium-card countries-card">
+
+    <div class="flags">
+
+      <span>🇺🇸</span>
+      <span>🇬🇧</span>
+      <span>🇨🇦</span>
+      <span>🇩🇪</span>
+      <span>🇫🇷</span>
+      <span>🇯🇵</span>
+
+    </div>
+
+    <h3 class="counter" data-target="45">0</h3>
+
+    <p>Countries Covered</p>
+
+  </div>
+
+  <!-- HAPPY CLIENTS -->
+
+  <div class="premium-card clients-card">
+
+    <div class="emoji-row">
+      😊 🚚 ⭐ 🌍
+    </div>
+
+    <h3 class="counter" data-target="980">0</h3>
+
+    <p>Happy Clients</p>
+
+    <span class="client-badge">
+      Trusted Worldwide
+    </span>
+
+  </div>
+
+</div>
+
 </section>
 
 <!-- MAP -->
@@ -1043,6 +1320,46 @@ Register Shipment
 
 </footer>
 
+
+<script>
+
+const counters =
+document.querySelectorAll(".counter");
+
+const speed = 200;
+
+counters.forEach(counter => {
+
+const animate = () => {
+
+const value =
++counter.getAttribute("data-target");
+
+const data =
++counter.innerText;
+
+const time = value / speed;
+
+if(data < value){
+
+counter.innerText =
+Math.ceil(data + time);
+
+setTimeout(animate, 15);
+
+}else{
+
+counter.innerText = value;
+
+}
+
+};
+
+animate();
+
+});
+
+</script>
 <!-- SCRIPTS -->
 <script>
 
