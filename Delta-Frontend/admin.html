@@ -175,6 +175,86 @@ visibility:visible !important;
 opacity:1 !important;
 }
 
+/* ================= MOBILE RESPONSIVE ================= */
+
+@media(max-width:768px){
+
+body{
+padding:10px;
+overflow-x:hidden;
+}
+
+/* containers */
+
+.container,
+.dashboard,
+.admin-container,
+.panel{
+width:100%;
+padding:10px;
+box-sizing:border-box;
+}
+
+/* forms */
+
+input,
+select,
+textarea,
+button{
+width:100%;
+font-size:16px;
+margin-bottom:12px;
+box-sizing:border-box;
+}
+
+/* buttons */
+
+button{
+padding:14px;
+}
+
+/* tables */
+
+table{
+display:block;
+overflow-x:auto;
+white-space:nowrap;
+width:100%;
+}
+
+/* cards */
+
+.card{
+width:100%;
+margin-bottom:15px;
+}
+
+/* map */
+
+#map{
+height:300px !important;
+width:100% !important;
+}
+
+/* shipment controls */
+
+.actions,
+.controls,
+.form-row{
+display:flex;
+flex-direction:column;
+gap:10px;
+}
+
+/* prevent overflow */
+
+img{
+max-width:100%;
+height:auto;
+}
+
+}
+
 </style>
 </head>
 <body>
