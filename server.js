@@ -352,7 +352,57 @@ res.status(500).json({error:"Server error"});
 
 });
 
+/* ================= STATS ================= */
 
+let homepageStats = {
+
+delivered: 1250,
+active: 320,
+countries: 45,
+clients: 980
+
+};
+
+/* GET STATS */
+
+app.get("/api/stats", (req,res)=>{
+
+res.json(homepageStats);
+
+});
+
+/* UPDATE STATS */
+
+app.put("/api/stats", (req,res)=>{
+
+const password = req.body.password;
+
+if(password !== "admin123"){
+
+return res.status(401).json({
+error:"Unauthorized"
+});
+
+}
+
+homepageStats.delivered =
+req.body.delivered;
+
+homepageStats.active =
+req.body.active;
+
+homepageStats.countries =
+req.body.countries;
+
+homepageStats.clients =
+req.body.clients;
+
+res.json({
+success:true,
+stats:homepageStats
+});
+
+});
 
 /* ================================
    UPDATE SHIPMENT (ADMIN)

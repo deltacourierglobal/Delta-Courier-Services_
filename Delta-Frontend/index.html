@@ -986,6 +986,70 @@ font-size:42px;
 }
 
 }
+
+/* ================= FLAG SLIDER ================= */
+
+.flag-slider{
+overflow:hidden;
+width:100%;
+margin-bottom:20px;
+}
+
+.flag-track{
+display:flex;
+gap:25px;
+width:max-content;
+animation:slideFlags 18s linear infinite;
+font-size:20px;
+font-weight:600;
+opacity:0.95;
+}
+
+@keyframes slideFlags{
+
+0%{
+transform:translateX(0);
+}
+
+100%{
+transform:translateX(-50%);
+}
+
+}
+
+/* ================= CLIENT PREMIUM ================= */
+
+.client-icons{
+display:flex;
+justify-content:center;
+gap:14px;
+margin-bottom:20px;
+}
+
+.client-circle{
+width:50px;
+height:50px;
+border-radius:50%;
+background:
+linear-gradient(
+135deg,
+#1e88ff,
+#64b5ff
+);
+display:flex;
+align-items:center;
+justify-content:center;
+font-size:22px;
+font-weight:bold;
+box-shadow:
+0 8px 25px rgba(30,136,255,0.35);
+}
+
+/* ================= REALISTIC COUNTERS ================= */
+
+.counter{
+font-variant-numeric:tabular-nums;
+}
 </style>
 
 </head>
@@ -1121,7 +1185,7 @@ Our Global Logistics Network
 
     <div class="glow"></div>
 
-    <h3 class="counter" data-target="1250">0</h3>
+    <h3 id="deliveredCount">0</h3>
 
     <p>Packages Delivered</p>
 
@@ -1135,7 +1199,7 @@ Our Global Logistics Network
 
     <div class="pulse-dot"></div>
 
-    <h3 class="counter" data-target="320">0</h3>
+    <h3 id="activeCount">0</h3>
 
     <p>Active Shipments</p>
 
@@ -1147,42 +1211,72 @@ Our Global Logistics Network
 
   <!-- COUNTRIES -->
 
-  <div class="premium-card countries-card">
+<div class="premium-card countries-card">
 
-    <div class="flags">
+<div class="flag-slider">
 
-      <span>🇺🇸</span>
-      <span>🇬🇧</span>
-      <span>🇨🇦</span>
-      <span>🇩🇪</span>
-      <span>🇫🇷</span>
-      <span>🇯🇵</span>
+<div class="flag-track">
 
-    </div>
+<span>🇺🇸 USA</span>
+<span>🇬🇧 UK</span>
+<span>🇨🇦 CANADA</span>
+<span>🇩🇪 GERMANY</span>
+<span>🇫🇷 FRANCE</span>
+<span>🇯🇵 JAPAN</span>
+<span>🇦🇪 UAE</span>
+<span>🇦🇺 AUSTRALIA</span>
+<span>🇵🇹 PORTUGAL</span>
+<span>🇳🇬 NIGERIA</span>
+<span>🇨🇳 CHINA</span>      
+<span>🇮🇳 INDIA</span>       
+<span>🇿🇦 SOUTH AFRICA</span> 
+<span>🇮🇹 ITALY</span>       
+<span>🇧🇷 BRAZIL</span>      
+<span>🇸🇬 SINGAPORE</span>
+<span>🇳🇱 NETHERLANDS</span>
+<span>🇲🇽 MEXICO</span>
+<span>🇰🇪 KENYA</span>
+<span>🇰🇷 SOUTH KOREA</span>
+<!-- duplicate for smooth loop -->
 
-    <h3 class="counter" data-target="45">0</h3>
+<span>🇺🇸 USA</span>
+<span>🇬🇧 UK</span>
+<span>🇨🇦 CANADA</span>
+<span>🇩🇪 GERMANY</span>
+<span>🇫🇷 FRANCE</span>
+<span>🇯🇵 JAPAN</span>
 
-    <p>Countries Covered</p>
+</div>
 
-  </div>
+</div>
+
+<h3 id="countryCount">0</h3>
+
+<p>Countries Covered</p>
+
+</div>
 
   <!-- HAPPY CLIENTS -->
 
-  <div class="premium-card clients-card">
+<div class="premium-card clients-card">
 
-    <div class="emoji-row">
-      😊 🚚 ⭐ 🌍
-    </div>
+<div class="client-icons">
 
-    <h3 class="counter" data-target="980">0</h3>
+<div class="client-circle">★</div>
+<div class="client-circle">✓</div>
+<div class="client-circle">◆</div>
 
-    <p>Happy Clients</p>
+</div>
 
-    <span class="client-badge">
-      Trusted Worldwide
-    </span>
+<h3 id="clientCount">0</h3>
 
-  </div>
+<p>Satisfied Global Clients</p>
+
+<span class="client-badge">
+Enterprise Trusted
+</span>
+
+</div>
 
 </div>
 

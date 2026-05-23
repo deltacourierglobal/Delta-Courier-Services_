@@ -438,6 +438,37 @@ placeholder="Enter Tracking Number">
 </div>
 </div>
 
+<section class="stats-admin">
+
+<h2>Homepage Statistics</h2>
+
+<input
+type="number"
+id="deliveredInput"
+placeholder="Delivered Packages">
+
+<input
+type="number"
+id="activeInput"
+placeholder="Active Shipments">
+
+<input
+type="number"
+id="countriesInput"
+placeholder="Countries Covered">
+
+<input
+type="number"
+id="clientsInput"
+placeholder="Happy Clients">
+
+<button onclick="updateStats()">
+Update Homepage Stats
+</button>
+
+<div id="statsMsg"></div>
+
+</section>
 
 <form id="heroForm">
   <input type="file" name="hero" required>
@@ -977,6 +1008,141 @@ loadShipments();
 
 </script>
 
+<script>
+
+function updateStats(){
+
+const payload = {
+
+password:"admin123",
+
+delivered:Number(
+document.getElementById(
+"deliveredInput"
+).value
+),
+
+active:Number(
+document.getElementById(
+"activeInput"
+).value
+),
+
+countries:Number(
+document.getElementById(
+"countriesInput"
+).value
+),
+
+clients:Number(
+document.getElementById(
+"clientsInput"
+).value
+)
+
+};
+
+fetch("/api/stats",{
+
+method:"PUT",
+
+headers:{
+"Content-Type":"application/json"
+},
+
+body:JSON.stringify(payload)
+
+})
+
+.then(res=>res.json())
+
+.then(data=>{
+
+if(data.success){
+
+document.getElementById(
+"statsMsg"
+).innerHTML =
+"<p>Stats Updated</p>";
+
+}else{
+
+document.getElementById(
+"statsMsg"
+).innerHTML =
+"<p>Update Failed</p>";
+
+}
+
+});
+
+}
+
+</script>
+
+<script>
+
+fetch("/api/stats")
+
+.then(res => res.json())
+
+.then(stats => {
+
+animateCounter(
+"deliveredCount",
+stats.delivered
+);
+
+animateCounter(
+"activeCount",
+stats.active
+);
+
+animateCounter(
+"countryCount",
+stats.countries
+);
+
+animateCounter(
+"clientCount",
+stats.clients
+);
+
+});
+
+function animateCounter(id,target){
+
+let count = 0;
+
+const element =
+document.getElementById(id);
+
+const speed = target / 100;
+
+const update = () => {
+
+count += speed;
+
+if(count < target){
+
+element.innerText =
+Math.floor(count);
+
+requestAnimationFrame(update);
+
+}else{
+
+element.innerText = target;
+
+}
+
+};
+
+update();
+
+}
+
+</script>
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBxNfOGRptsXdSijEekyAeLmnHFdZgDAfY&callback=initMap" async defer></script>
 </body>
 </html>
