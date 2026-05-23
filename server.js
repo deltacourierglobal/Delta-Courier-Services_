@@ -392,11 +392,17 @@ error:"Failed to load stats"
 
 app.put("/api/stats", async (req,res)=>{
 
+console.log("STATS UPDATE RECEIVED");
+
 try{
+
+console.log("BODY:", req.body);
 
 const password = req.body.password;
 
 if(password !== "admin123"){
+
+console.log("WRONG PASSWORD");
 
 return res.status(401).json({
 error:"Unauthorized"
@@ -406,7 +412,11 @@ error:"Unauthorized"
 
 let stats = await Stats.findOne();
 
+console.log("FOUND STATS:", stats);
+
 if(!stats){
+
+console.log("CREATING NEW STATS");
 
 stats = new Stats();
 
@@ -426,6 +436,8 @@ req.body.clients;
 
 await stats.save();
 
+console.log("STATS SAVED");
+
 res.json({
 success:true,
 stats
@@ -433,7 +445,7 @@ stats
 
 }catch(err){
 
-console.log(err);
+console.log("STATS ERROR:", err);
 
 res.status(500).json({
 error:"Failed to update stats"
@@ -442,7 +454,6 @@ error:"Failed to update stats"
 }
 
 });
-
 /* ================================
    UPDATE SHIPMENT (ADMIN)
 ================================ */
