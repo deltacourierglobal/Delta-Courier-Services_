@@ -522,6 +522,36 @@ if(req.body.deliveryDate){
 shipment.deliveryDate = new Date(req.body.deliveryDate);
 }
 
+/* UPDATE CLIENT INFO */
+
+if(req.body.receiver){
+
+shipment.receiver =
+req.body.receiver;
+
+}
+
+if(req.body.email){
+
+shipment.email =
+req.body.email;
+
+}
+
+if(req.body.phone){
+
+shipment.phone =
+req.body.phone;
+
+}
+
+if(req.body.destination){
+
+shipment.destination =
+req.body.destination;
+
+}
+
 /* TRANSPORT MODE */
 
 if(req.body.transportMode){
@@ -648,6 +678,7 @@ shipment
 });
 
 });
+
 // ================================
 // SERVE FRONTEND
 // ================================

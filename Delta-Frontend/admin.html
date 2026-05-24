@@ -371,6 +371,27 @@ Delayed
 <textarea id="customerMessage"
 placeholder="Customer email update message"></textarea>
 
+
+<input
+type="text"
+id="updateReceiver"
+placeholder="Receiver Name">
+
+<input
+type="email"
+id="updateEmail"
+placeholder="Receiver Email">
+
+<input
+type="text"
+id="updatePhone"
+placeholder="Receiver Phone">
+
+<input
+type="text"
+id="updateDestination"
+placeholder="Destination">
+
 <label>Estimated Delivery</label>
 <input type="datetime-local" id="updateDeliveryDate">
 
@@ -469,6 +490,7 @@ Update Homepage Stats
 <div id="statsMsg"></div>
 
 </section>
+
 
 <form id="heroForm">
   <input type="file" name="hero" required>
@@ -886,6 +908,29 @@ window.updateShipment = function(){
       date: new Date().toLocaleString()
     };
   }
+
+
+  //======NEW==CLIENTT==INFO==UPDATE===//
+
+payload.receiver =
+document.getElementById(
+"updateReceiver"
+).value;
+
+payload.email =
+document.getElementById(
+"updateEmail"
+).value;
+
+payload.phone =
+document.getElementById(
+"updatePhone"
+).value;
+
+payload.destination =
+document.getElementById(
+"updateDestination"
+).value;
 
   const delivery = document.getElementById("updateDeliveryDate").value;
   if(delivery) payload.deliveryDate = new Date(delivery).toISOString();
