@@ -423,11 +423,15 @@ let countdownInterval = null;
 let floatingInterval = null;
 let animationInterval = null;
 
-// ================= DATE FORMAT (FIXED GLOBAL) =================
+// ================= DATE FORMAT (GLOBAL) =================
 function formatDate(dateString) {
+
   const d = new Date(dateString);
+
   if (isNaN(d)) return "-";
-  return `${d.getMonth()+1}/${d.getDate()}/${d.getFullYear()}`;
+
+  return d.toLocaleString();
+
 }
 
 // ================= COUNTDOWN =================
