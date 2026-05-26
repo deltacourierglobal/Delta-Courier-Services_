@@ -651,6 +651,7 @@ console.log("FULL DATA:", data);
 console.log("Transport:", data.transportMode);
     updateRoute(data.currentStatus);
     setTransportIcon(data.transportMode);
+    window.currentShipment = data;
     updateCountdown(data.deliveryDate);
     createMap(
   data.lat,
