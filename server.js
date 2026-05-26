@@ -15,7 +15,7 @@ const path = require('path');
 const multer = require("multer");
 
 const sendEmail = require("./utils/sendEmail");
-
+const supportRoutes = require("./routes/supportRoutes");
 const Stats = require("./models/stats");
 //const sendSMS = require("./utils/sendSMS");//
 
