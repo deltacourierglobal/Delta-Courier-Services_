@@ -437,6 +437,14 @@ function formatDate(dateString) {
 // ================= COUNTDOWN =================
 function updateCountdown(deliveryDate) {
   const el = document.getElementById("countdown");
+
+  if(window.currentShipment?.isDelayed){
+
+el.innerText = "Paused due to shipment delay";
+
+return;
+
+}
   if (!el) return;
 
   if (countdownInterval) clearInterval(countdownInterval);
