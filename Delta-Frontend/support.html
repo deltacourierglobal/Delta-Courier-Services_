@@ -592,6 +592,9 @@ Fast, secure and reliable logistics solutions for international and local shippi
 
 <script>
 
+const API_BASE =
+"https://delta-courier-services-production-5a20.up.railway.app";
+
 const supportForm = document.getElementById("supportForm");
 const successMessage = document.getElementById("successMessage");
 
@@ -614,7 +617,10 @@ try{
 console.log("SENDING:");
 console.log(supportData);
 
-const response = await fetch("/api/support",{
+console.log("Sending request to:",
+`${API_BASE}/api/support`);
+
+const response = await fetch(`${API_BASE}/api/support`,{
 
 method:"POST",
 
