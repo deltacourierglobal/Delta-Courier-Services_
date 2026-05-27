@@ -611,6 +611,9 @@ message: document.getElementById("message").value
 
 try{
 
+console.log("SENDING:");
+console.log(supportData);
+
 const response = await fetch("/api/support",{
 
 method:"POST",
@@ -623,7 +626,18 @@ body:JSON.stringify(supportData)
 
 });
 
+console.log("STATUS:", response.status);
+
 const data = await response.json();
+
+console.log("SERVER RESPONSE:");
+console.log(data);
+
+if(!response.ok){
+
+throw new Error(data.message || "Submission failed");
+
+}
 
 successMessage.style.display = "block";
 
@@ -635,10 +649,12 @@ supportForm.reset();
 
 }catch(err){
 
-alert("Submission failed");
+console.log("FRONTEND ERROR:");
+console.log(err);
+
+alert(err.message);
 
 }
-
 });
 </script>
 
