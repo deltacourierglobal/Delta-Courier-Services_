@@ -930,16 +930,35 @@ console.log("CREATE ERROR:", err);
 
 
 //===ADMIN=DASHBOARD=SCRIPT==//
-async function loadTickets(){
+async function loadTickets() {
 
-const response = await fetch(`${API_BASE}/api/support`)
+try {
+
+const response = await fetch(`${API_BASE}/api/support`);
+
+console.log("Response:", response);
+
+if (!response.ok) {
+throw new Error(`HTTP Error: ${response.status}`);
+}
 
 const tickets = await response.json();
+
+console.log("Tickets:", tickets);
 
 const container =
 document.getElementById("ticketContainer");
 
 container.innerHTML = "";
+
+if (tickets.length === 0) {
+
+container.innerHTML =
+"<p>No support tickets found</p>";
+
+return;
+
+}
 
 tickets.forEach(ticket=>{
 
@@ -980,6 +999,12 @@ Send Reply
 `;
 
 });
+
+} catch(error){
+
+console.error("Ticket loading failed:", error);
+
+}
 
 }
 
