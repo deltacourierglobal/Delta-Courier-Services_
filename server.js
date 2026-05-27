@@ -144,19 +144,6 @@ Math.floor(100000000 + Math.random()*900000000)
 }
 
 
-// ================================
-// API ROUTES
-// ================================
-
-app.post("/api/support", (req, res) => {
-  const { name, email, trackingNumber, message } = req.body;
-
-  console.log("NEW SUPPORT MESSAGE:", req.body);
-
-  // You can save to DB here later
-
-  res.json({ success: true });
-});
 /* ================================
    CREATE SHIPMENT
 ================================ */
