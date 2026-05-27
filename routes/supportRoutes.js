@@ -59,9 +59,15 @@ try{
 const tickets = await Support.find()
 .sort({createdAt:-1});
 
+console.log("FOUND TICKETS:");
+console.log(tickets);
+
 res.json(tickets);
 
 }catch(err){
+
+console.log("GET ERROR:");
+console.log(err);
 
 res.status(500).json({
 message:"Error loading tickets"
@@ -70,7 +76,6 @@ message:"Error loading tickets"
 }
 
 });
-
 /* ADMIN REPLY */
 
 router.put("/:id/reply", async(req,res)=>{
