@@ -8,6 +8,9 @@ router.post("/", async(req,res)=>{
 
 try{
 
+console.log("SUPPORT REQUEST BODY:");
+console.log(req.body);
+
 const ticketId =
 "SUP-" + Math.floor(100000 + Math.random()*900000);
 
@@ -24,6 +27,9 @@ message:req.body.message
 
 await newTicket.save();
 
+console.log("SAVED:");
+console.log(newTicket);
+
 res.json({
 success:true,
 message:"Support request submitted",
@@ -32,6 +38,7 @@ ticketId
 
 }catch(err){
 
+console.log("SAVE ERROR:");
 console.log(err);
 
 res.status(500).json({
