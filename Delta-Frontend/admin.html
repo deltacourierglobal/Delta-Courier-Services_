@@ -255,6 +255,48 @@ height:auto;
 
 }
 
+.admin-support{
+margin-top:40px;
+background:white;
+padding:25px;
+border-radius:12px;
+}
+
+.ticket-card{
+border:1px solid #ddd;
+padding:20px;
+margin-bottom:20px;
+border-radius:10px;
+background:#fafafa;
+}
+
+.ticket-card h3{
+margin-bottom:10px;
+}
+
+.ticket-card p{
+margin:6px 0;
+}
+
+.reply-box{
+width:100%;
+padding:12px;
+margin-top:12px;
+border:1px solid #ccc;
+border-radius:8px;
+min-height:100px;
+}
+
+.reply-btn{
+margin-top:12px;
+padding:12px 20px;
+border:none;
+background:#1d4d8f;
+color:white;
+border-radius:8px;
+cursor:pointer;
+}
+
 </style>
 </head>
 <body>
@@ -458,6 +500,14 @@ placeholder="Enter Tracking Number">
 
 </div>
 </div>
+
+<section class="admin-support">
+
+<h2>Support Tickets</h2>
+
+<div id="ticketContainer"></div>
+
+</section>
 
 <section class="stats-admin">
 
@@ -878,7 +928,88 @@ console.log("CREATE ERROR:", err);
 
 };
 
+//===ADMIN=DASHBOARD=JAVASCRIPT==//
+async function loadTickets(){
 
+const response = await fetch("/api/support");
+
+const tickets = await response.json();
+
+const container =
+document.getElementById("ticketContainer");
+
+container.innerHTML = "";
+
+tickets.forEach(ticket=>{
+
+container.innerHTML += `
+
+<div class="ticket-card">
+
+<h3>${ticket.ticketId}</h3>
+
+<p><strong>Name:</strong> ${ticket.name}</p>
+
+<p><strong>Email:</strong> ${ticket.email}</p>
+
+<p><strong>Tracking:</strong> ${ticket.tracking}</p>
+
+<p><strong>Category:</strong> ${ticket.category}</p>
+
+<p><strong>Message:</strong> ${ticket.message}</p>
+
+<p><strong>Status:</strong> ${ticket.status}</p>
+
+<textarea
+class="reply-box"
+id="reply-${ticket._id}"
+placeholder="Write admin response..."
+>${ticket.adminReply || ""}</textarea>
+
+<button
+class="reply-btn"
+onclick="sendReply('${ticket._id}')">
+
+Send Reply
+
+</button>
+
+</div>
+
+`;
+
+});
+
+}
+
+loadTickets();
+
+//===ADMIN==REPLY==FUNCTION===//
+
+async function sendReply(id){
+
+const reply =
+document.getElementById(`reply-${id}`).value;
+
+await fetch(`/api/support/${id}/reply`,{
+
+method:"PUT",
+
+headers:{
+"Content-Type":"application/json"
+},
+
+body:JSON.stringify({
+adminReply:reply
+})
+
+});
+
+alert("Reply sent");
+
+loadTickets();
+
+}
 // ================= UPDATE =================
 
 window.updateShipment = function(){

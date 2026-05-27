@@ -595,31 +595,51 @@ Fast, secure and reliable logistics solutions for international and local shippi
 const supportForm = document.getElementById("supportForm");
 const successMessage = document.getElementById("successMessage");
 
-supportForm.addEventListener("submit", function(e){
+supportForm.addEventListener("submit", async function(e){
 
 e.preventDefault();
 
 const supportData = {
+
 name: document.getElementById("name").value,
 email: document.getElementById("email").value,
 tracking: document.getElementById("tracking").value,
 category: document.getElementById("category").value,
-message: document.getElementById("message").value,
-date: new Date().toLocaleString()
+message: document.getElementById("message").value
+
 };
 
-console.log("SUPPORT REQUEST:", supportData);
+try{
 
-successMessage.style.display = "block";
+const response = await fetch("/api/support",{
 
-supportForm.reset();
+method:"POST",
 
-setTimeout(() => {
-successMessage.style.display = "none";
-}, 5000);
+headers:{
+"Content-Type":"application/json"
+},
+
+body:JSON.stringify(supportData)
 
 });
 
+const data = await response.json();
+
+successMessage.style.display = "block";
+
+successMessage.innerHTML =
+`Support ticket submitted successfully.<br>
+Ticket ID: <strong>${data.ticketId}</strong>`;
+
+supportForm.reset();
+
+}catch(err){
+
+alert("Submission failed");
+
+}
+
+});
 </script>
 
 </body>

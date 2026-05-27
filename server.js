@@ -56,7 +56,7 @@ app.post("/upload-hero", upload.single("hero"), (req, res) => {
 // ================================
 app.use(cors());
 app.use(express.json());
-
+app.use("/api/support", supportRoutes);
 
 // DATABASE CONNECTION
 let DB_CONNECTED = false;
