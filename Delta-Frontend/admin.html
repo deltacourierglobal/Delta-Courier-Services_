@@ -932,7 +932,7 @@ console.log("CREATE ERROR:", err);
 //===ADMIN=DASHBOARD=SCRIPT==//
 async function loadTickets(){
 
-const response = await fetch("/api/support");
+const response = await fetch(`${API_BASE}/api/support`)
 
 const tickets = await response.json();
 
@@ -992,7 +992,7 @@ async function sendReply(id){
 const reply =
 document.getElementById(`reply-${id}`).value;
 
-await fetch(`/api/support/${id}/reply`,{
+await fetch(`${API_BASE}/api/support/${id}/reply`,{
 
 method:"PUT",
 
@@ -1186,91 +1186,6 @@ loadShipments();
 
 </script>
 
-
-//===ADMIN=DASHBOARD=JAVASCRIPT==//
-<script>
-async function loadTickets(){
-
-const response = await fetch("/api/support");
-
-const tickets = await response.json();
-
-const container =
-document.getElementById("ticketContainer");
-
-container.innerHTML = "";
-
-tickets.forEach(ticket=>{
-
-container.innerHTML += `
-
-<div class="ticket-card">
-
-<h3>${ticket.ticketId}</h3>
-
-<p><strong>Name:</strong> ${ticket.name}</p>
-
-<p><strong>Email:</strong> ${ticket.email}</p>
-
-<p><strong>Tracking:</strong> ${ticket.tracking}</p>
-
-<p><strong>Category:</strong> ${ticket.category}</p>
-
-<p><strong>Message:</strong> ${ticket.message}</p>
-
-<p><strong>Status:</strong> ${ticket.status}</p>
-
-<textarea
-class="reply-box"
-id="reply-${ticket._id}"
-placeholder="Write admin response..."
->${ticket.adminReply || ""}</textarea>
-
-<button
-class="reply-btn"
-onclick="sendReply('${ticket._id}')">
-
-Send Reply
-
-</button>
-
-</div>
-
-`;
-
-});
-
-}
-
-loadTickets();
-
-//===ADMIN==REPLY==FUNCTION===//
-
-async function sendReply(id){
-
-const reply =
-document.getElementById(`reply-${id}`).value;
-
-await fetch(`/api/support/${id}/reply`,{
-
-method:"PUT",
-
-headers:{
-"Content-Type":"application/json"
-},
-
-body:JSON.stringify({
-adminReply:reply
-})
-
-});
-
-alert("Reply sent");
-
-loadTickets();
-
-}
-</script>
 
 <script>
 
