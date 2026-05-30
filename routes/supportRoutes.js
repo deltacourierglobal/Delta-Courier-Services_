@@ -91,8 +91,7 @@ const updated = await Support.findByIdAndUpdate(
 req.params.id,
 
 {
-adminReply:req.body.adminReply,
-status:"Resolved"
+adminReply:req.body.adminReply
 },
 
 {new:true}
@@ -110,5 +109,27 @@ message:"Reply failed"
 }
 
 });
+/* DELETE TICKET */
 
+router.delete("/:id", async(req,res)=>{
+
+try{
+
+await Support.findByIdAndDelete(
+req.params.id
+);
+
+res.json({
+success:true
+});
+
+}catch(err){
+
+res.status(500).json({
+message:"Delete failed"
+});
+
+}
+
+});
 module.exports = router;
