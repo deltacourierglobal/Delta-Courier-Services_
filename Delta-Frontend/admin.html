@@ -1049,6 +1049,24 @@ loadTickets();
 
 }
 
+//================= DELETE TICKET =================
+window.deleteTicket = async function(id){
+
+if(!confirm("Delete this ticket?"))
+return;
+
+await fetch(`${API_BASE}/api/support/${id}`,{
+
+method:"DELETE"
+
+});
+
+alert("Ticket deleted");
+
+loadTickets();
+
+}
+
 // ================= UPDATE =================
 
 window.updateShipment = function(){
