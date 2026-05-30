@@ -6,6 +6,10 @@ const Support = require("../models/support");
 
 router.post("/", async(req,res)=>{
 
+console.log("POST /api/support HIT");
+console.log("BODY:", req.body);
+
+
 try{
 
 console.log("SUPPORT REQUEST BODY:");
