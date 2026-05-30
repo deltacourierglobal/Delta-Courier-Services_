@@ -18,7 +18,7 @@ const sendEmail = require("./utils/sendEmail");
 const supportRoutes = require("./routes/supportRoutes");
 const Stats = require("./models/stats");
 //const sendSMS = require("./utils/sendSMS");//
-
+const chatRoutes = require("./routes/chatRoutes");
 const authRoutes = require('./routes/authRoutes');
 
 const app = express();
@@ -57,7 +57,7 @@ app.post("/upload-hero", upload.single("hero"), (req, res) => {
 app.use(cors());
 app.use(express.json());
 app.use("/api/support", supportRoutes);
-
+app.use("/api/chat", chatRoutes);
 // DATABASE CONNECTION
 let DB_CONNECTED = false;
 

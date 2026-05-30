@@ -1118,7 +1118,7 @@ pageLanguage: 'en'
 
   <div id="contact-options">
     <a href="mailto:support@deltacourier.com">📧 Email</a>
-    <a href="https://wa.me/2340000000000">📱 WhatsApp</a>
+    <a href="https://wa.me/+44324660894">📱 WhatsApp</a>
     <a href="#" id="openSupport">💬 Contact Support</a>
   </div>
 
@@ -1506,6 +1506,22 @@ document.addEventListener("DOMContentLoaded", () => {
   const chatInput = document.getElementById("chatInput");
   const sendBtn = document.getElementById("sendMsg");
 
+  // ADD HERE
+  let sessionId =
+  localStorage.getItem("chatSession");
+
+  if(!sessionId){
+
+    sessionId =
+    "CHAT-" + Date.now();
+
+    localStorage.setItem(
+      "chatSession",
+      sessionId
+    );
+
+  }
+
   // TOGGLE CONTACT DROPDOWN
   contactBtn.onclick = () => {
     contactOptions.classList.toggle("show");
@@ -1527,26 +1543,78 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   // SEND MESSAGE
-  function sendMessage(){
-    const text = chatInput.value.trim();
-    if(!text) return;
+ async function sendMessage(){
 
-    const msg = document.createElement("div");
-    msg.className = "user-msg";
-    msg.innerText = text;
-    chatBody.appendChild(msg);
+  const text = chatInput.value.trim();
 
-    chatInput.value = "";
-    chatBody.scrollTop = chatBody.scrollHeight;
+  if(!text) return;
 
-    setTimeout(()=>{
-      const reply = document.createElement("div");
-      reply.className = "bot-msg";
-      reply.innerText = "Support will reply shortly.";
-      chatBody.appendChild(reply);
-      chatBody.scrollTop = chatBody.scrollHeight;
-    },1000);
+  // Show customer message
+
+  const msg = document.createElement("div");
+
+  msg.className = "user-msg";
+
+  msg.innerText = text;
+
+  chatBody.appendChild(msg);
+
+  chatInput.value = "";
+
+  chatBody.scrollTop = chatBody.scrollHeight;
+
+  // Save ticket to backend
+
+  try{
+
+    await fetch(
+      "https://delta-courier-services-production-5a20.up.railway.app/api/support",
+      {
+        method:"POST",
+        headers:{
+          "Content-Type":"application/json"
+        },
+        body:JSON.stringify({
+
+          name:"Website Visitor",
+
+          email:"",
+
+          tracking:"",
+
+          category:"Live Chat",
+
+          message:text
+
+        })
+      }
+    );
+
+  }catch(err){
+
+    console.log("SUPPORT SAVE ERROR:", err);
+
   }
+
+  // Automatic response
+
+  setTimeout(()=>{
+
+    const reply = document.createElement("div");
+
+    reply.className = "bot-msg";
+
+    reply.innerText =
+    "Thank you for contacting Delta Courier. Support will respond shortly.";
+
+    chatBody.appendChild(reply);
+
+    chatBody.scrollTop =
+    chatBody.scrollHeight;
+
+  },1000);
+
+}
 
   if(sendBtn){
     sendBtn.onclick = sendMessage;
