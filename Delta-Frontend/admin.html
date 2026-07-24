@@ -556,8 +556,7 @@ Update Homepage Stats
 
 document.addEventListener("DOMContentLoaded", function () {
 
-const API_BASE =
-"https://delta-courier-services-production-5a20.up.railway.app";
+const API_BASE = window.location.origin;
 
 
 if(localStorage.getItem("adminAuth")!=="true"){
