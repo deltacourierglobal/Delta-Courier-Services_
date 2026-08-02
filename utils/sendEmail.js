@@ -24,9 +24,8 @@ const sendEmail = async (
 
   try {
 
-    console.log("BREVO_API_KEY exists:", !!process.env.BREVO_API_KEY);
-console.log("BREVO_API_KEY first 12 chars:", process.env.BREVO_API_KEY?.substring(0, 12));
-console.log("BREVO_USER:", process.env.BREVO_USER);
+    console.log("BREVO_API_KEY:", process.env.BREVO_API_KEY);
+    console.log("BREVO_USER:", process.env.BREVO_USER);
 
     const data = await apiInstance.sendTransacEmail({
 
