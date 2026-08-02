@@ -79,7 +79,7 @@ ${status}
 
 <div style="text-align:center;margin-top:35px;">
 
-<a href="https://delta-courier-services-production-7c17.up.railway.app/track.html?trackingNumber=${trackingNumber}"
+<a href="https://delta-courier-services-production-cb76.up.railway.app/track.html?trackingNumber=${trackingNumber}"
 
 style="background:#ff6b00;color:white;padding:14px 28px;text-decoration:none;border-radius:8px;font-weight:bold;display:inline-block;">
 
