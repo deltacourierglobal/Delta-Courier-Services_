@@ -7,6 +7,10 @@ defaultClient.authentications['api-key'];
 
 apiKey.apiKey = process.env.BREVO_API_KEY;
 
+console.log("BREVO_API_KEY exists:", !!process.env.BREVO_API_KEY);
+console.log("BREVO_API_KEY first 12 chars:", process.env.BREVO_API_KEY?.substring(0, 12));
+console.log("BREVO_USER:", process.env.BREVO_USER);
+
 const apiInstance =
 new SibApiV3Sdk.TransactionalEmailsApi();
 
