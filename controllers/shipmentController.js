@@ -32,6 +32,7 @@ exports.setDBConnected = (status) => { DB_CONNECTED = status };
 // CREATE SHIPMENT
 // --------------------
 exports.createShipment = async (req, res) => {
+  console.log(req.body);
 const {
   receiver,
   origin,
