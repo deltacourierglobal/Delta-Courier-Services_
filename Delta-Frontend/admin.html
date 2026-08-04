@@ -350,6 +350,16 @@ Logout
   <option value="Express">Express</option>
 </select>
 
+<div class="form-group">
+    <label for="shipmentDate">Shipment Date & Time</label>
+    <input
+        type="datetime-local"
+        id="shipmentDate"
+        name="shipmentDate"
+        required
+    >
+</div>
+
 <label>Estimated Delivery</label>
 <input type="datetime-local" id="deliveryDateInput">
 
@@ -855,6 +865,9 @@ document.getElementById("deliveryType").value,
 transportMode:
 document.getElementById("transportMode").value,
 
+shipmentDate:
+document.getElementById("shipmentDate").value,
+
 currentStatus:
 "Shipment Registered",
 
@@ -862,7 +875,7 @@ history:[
 {
 status:"Shipment Registered",
 location:"Origin Facility",
-date:new Date().toLocaleString()
+date:document.getElementById("shipmentDate").value
 }
 ]
 

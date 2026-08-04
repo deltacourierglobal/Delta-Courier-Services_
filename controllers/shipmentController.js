@@ -32,7 +32,15 @@ exports.setDBConnected = (status) => { DB_CONNECTED = status };
 // CREATE SHIPMENT
 // --------------------
 exports.createShipment = async (req, res) => {
-  const { receiver, origin, destination, weight, deliveryType, currentStatus } = req.body;
+const {
+  receiver,
+  origin,
+  destination,
+  weight,
+  deliveryType,
+  currentStatus,
+  shipmentDate
+} = req.body;
   if (!receiver || !origin || !destination || !weight || !deliveryType) {
     return res.status(400).json({ error: "All shipment fields required" });
   }
@@ -48,11 +56,14 @@ exports.createShipment = async (req, res) => {
     weight,
     deliveryType,
     currentStatus: currentStatus || "Shipment Registered",
-    history: [{
-      date: new Date().toLocaleString(),
-      location: origin,
-      status: "Shipment Registered"
-    }]
+
+shipmentDate: shipmentDate || new Date().toISOString(),
+
+history: [{
+  date: shipmentDate || new Date().toISOString(),
+  location: origin,
+  status: "Shipment Registered"
+}]
   };
 
   if (DB_CONNECTED) {
