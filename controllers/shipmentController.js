@@ -49,23 +49,22 @@ const {
 "DC" + Date.now().toString().slice(-6);
 
   const shipment = {
-    trackingNumber,
-    receiver,
-    origin,
-    destination,
-    weight,
-    deliveryType,
-    currentStatus: currentStatus || "Shipment Registered",
+  trackingNumber,
+  receiver,
+  origin,
+  destination,
+  weight,
+  deliveryType,
+  currentStatus: currentStatus || "Shipment Registered",
 
-shipmentDate: shipmentDate || new Date().toISOString(),
+  shipmentDate: shipmentDate || new Date().toISOString(),
 
-history: [{
-  date: shipmentDate || new Date().toISOString(),
-  location: origin,
-  status: "Shipment Registered"
-}]
-  };
-
+  history: [{
+    date: shipmentDate || new Date().toISOString(),
+    location: origin,
+    status: "Shipment Registered"
+  }]
+};
   if (DB_CONNECTED) {
     try {
       await new Shipment(shipment).save();
