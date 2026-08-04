@@ -99,7 +99,7 @@ destination: String,
 weight: String,
 deliveryType: String,
 currentStatus: String,
-
+shipmentDate: String,
 deliveryDate: Date,
 isDelayed: Boolean,
 delayReason: String,
@@ -178,8 +178,9 @@ weight,
 deliveryType,
 
 currentStatus,
+shipmentDate,
 deliveryDate,
-deliveryDays
+deliveryDays,
 
 } = req.body;
 
@@ -228,11 +229,13 @@ deliveryDays,
 
 currentStatus: currentStatus || "Shipment Registered",
 
-history:[
+shipmentDate: shipmentDate,
+
+history: [
 {
-status:"Shipment Registered",
-location:"Origin Facility",
-date:new Date().toLocaleString()
+status: "Shipment Registered",
+location: "Origin Facility",
+date: shipmentDate || new Date().toLocaleString()
 }
 ]
 
