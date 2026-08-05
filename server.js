@@ -183,7 +183,8 @@ deliveryDate,
 deliveryDays,
 
 } = req.body;
-
+console.log("Shipment Date Received:", shipmentDate);
+console.log("Entire Request Body:", req.body);
 if(
 !receiver ||
 !origin ||
