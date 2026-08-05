@@ -230,13 +230,17 @@ deliveryDays,
 
 currentStatus: currentStatus || "Shipment Registered",
 
-shipmentDate: shipmentDate,
+shipmentDate: shipmentDate
+  ? new Date(shipmentDate).toLocaleString()
+  : new Date().toLocaleString(),
 
 history: [
 {
 status: "Shipment Registered",
 location: "Origin Facility",
-date: shipmentDate || new Date().toLocaleString()
+date: shipmentDate
+  ? new Date(shipmentDate).toLocaleString()
+  : new Date().toLocaleString()
 }
 ]
 
