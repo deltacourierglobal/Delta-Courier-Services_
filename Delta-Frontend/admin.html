@@ -566,12 +566,15 @@ Update Homepage Stats
 
 document.addEventListener("DOMContentLoaded", function () {
 
+
 const API_BASE_URL = window.location.origin;
 
-
-if(localStorage.getItem("adminAuth")!=="true"){
-   window.location.href="admin-login.html";
+// Check whether the admin is logged in
+if (localStorage.getItem("adminAuth") !== "true") {
+    window.location.replace("/admin-login.html");
+    return;
 }
+
 
 // CREATE MAP //
 

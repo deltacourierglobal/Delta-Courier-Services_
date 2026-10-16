@@ -687,6 +687,10 @@ app.get("/health", (req, res) => {
 app.use(express.static(path.join(__dirname,"Delta-Frontend")));
 app.use('/api/auth', authRoutes);
 
+app.get("/admin/login", (req, res) => {
+  res.sendFile(path.join(__dirname, "Delta-Frontend", "admin-login.html"));
+});
+
 app.get("/",(req,res)=>{
 res.sendFile(path.join(__dirname,"Delta-Frontend","index.html"));
 });
