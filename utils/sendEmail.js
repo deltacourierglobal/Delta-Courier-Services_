@@ -1,12 +1,10 @@
 const SibApiV3Sdk = require("sib-api-v3-sdk");
 
 // Frontend URL — the deployment that serves track.html
-const FRONTEND_URL = process.env.FRONTEND_URL;
-
-if (!FRONTEND_URL) {
-  throw new Error("FRONTEND_URL environment variable is missing");
-}
-
+const FRONTEND_URL =
+  process.env.FRONTEND_URL ||
+  "https://delta-courier-services.vercel.app";
+  
 // Configure Brevo
 const defaultClient = SibApiV3Sdk.ApiClient.instance;
 const apiKey = defaultClient.authentications["api-key"];
