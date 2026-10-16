@@ -28,7 +28,6 @@ app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 //====NEW====//
 const fs = require("fs");
 const os = require("os");
-const path = require("path");
 
 const uploadDir = path.join(os.tmpdir(), "uploads", "hero");
 
