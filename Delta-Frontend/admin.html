@@ -566,7 +566,7 @@ Update Homepage Stats
 
 document.addEventListener("DOMContentLoaded", function () {
 
-const API_BASE = "https://delta-courier-services-production-cb76.up.railway.app";
+const API_BASE_URL = window.location.origin;
 
 
 if(localStorage.getItem("adminAuth")!=="true"){
@@ -769,7 +769,7 @@ function startFloating(){
 
 window.loadShipments=function(){
 
-fetch(`${API_BASE}/api/shipments`)
+fetch(`${API_BASE_URL}/api/shipments`)
 .then(res=>res.json())
 
 .then(data=>{
@@ -893,7 +893,7 @@ new Date(delivery).toISOString();
 
 }
 
-fetch(`${API_BASE}/api/shipments`, {
+fetch(`${API_BASE_URL}/api/shipments`, {
 
 method:"POST",
 

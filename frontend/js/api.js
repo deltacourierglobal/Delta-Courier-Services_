@@ -1,3 +1,4 @@
-const API_BASE = "https://delta-courier-services-production-cb76.up.railway.app";
+// frontend/js/api.js
+const API_BASE = window.location.origin;
 
 export default API_BASE;

@@ -410,14 +410,14 @@ INVOICE #00000
 
 <script>
 
-const API_BASE = "https://delta-courier-services-production-cb76.up.railway.app";
+const API_BASE_URL = window.location.origin;
 
 const params = new URLSearchParams(window.location.search);
 
 const tracking =
 params.get("trackingNumber");
 
-fetch(`${API_BASE}/api/shipments/${tracking}`)
+fetch(`${API_BASE_URL}/api/shipments/${tracking}`)
 
 .then(res => {
 
