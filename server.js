@@ -27,12 +27,12 @@ app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
 //====NEW====//
 const fs = require("fs");
+const os = require("os");
+const path = require("path");
 
-const uploadDir = path.join(__dirname, "uploads/hero");
+const uploadDir = path.join(os.tmpdir(), "uploads", "hero");
 
-if (!fs.existsSync(uploadDir)) {
-  fs.mkdirSync(uploadDir, { recursive: true });
-}
+fs.mkdirSync(uploadDir, { recursive: true });
 
 // Storage config
 const storage = multer.diskStorage({
