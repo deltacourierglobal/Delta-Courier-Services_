@@ -641,7 +641,9 @@ async function loadShipment() {
   }
 
   try {
-    const res = await fetch(`${API_BASE}/api/shipments/${trackingNumber}`);
+    const res = await fetch(
+  `${API_BASE_URL}/api/shipments/${encodeURIComponent(trackingNumber)}`
+);
     const data = await res.json();
 
     if (!data) return;

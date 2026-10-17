@@ -474,12 +474,16 @@ window.initMap = function() {
     streetViewControl: false
   });
 
-  mapMarker = new google.maps.Marker({
-    position,
-    map: mapInstance,
-    icon: mapIcons.hub,
-    draggable: true
-  });
+
+mapMarker = new google.maps.Marker({
+  position,
+  map: mapInstance,
+  icon: mapIcons.hub,
+  draggable: true
+});
+
+// Keep bouncing continuously
+mapMarker.setAnimation(google.maps.Animation.BOUNCE);
 
   mapMarker.addListener("dragend", function() {
     const markerPosition = mapMarker.getPosition();
